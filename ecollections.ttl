@@ -32,9 +32,84 @@
 #################################################################
 
 
+###  http://purl.org/ceu/eco#isItemOf
+
+:isItemOf rdf:type owl:FunctionalProperty ,
+                   owl:ObjectProperty ;
+          
+          rdfs:label "is item of"@en ,
+                     "es item de"@es ;
+          
+          rdfs:comment "Property that relates an item with the collection that is part of."@en ,
+                       "Propiedad que relaciona un item con la colección de la que forma parte."@es ;
+          
+          rdfs:range <http://purl.org/ceu/eco/1.0#Collection> ;
+          
+          rdfs:domain <http://purl.org/ceu/eco/1.0#Item> ;
+          
+          owl:inverseOf <http://purl.org/ceu/eco/1.0#hasItem> .
+
+
+
+###  http://purl.org/ceu/eco#isOrderedItemOf
+
+:isOrderedItemOf rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:label "is ordered item of"@en ,
+                            "es item ordenado de"@es ;
+                 
+                 rdfs:comment "Property that relates an ordered item with the ordered collection that belongs to."@en ,
+                              "Propiedad que relaciona un item ordenado con la colección ordenada a la que pertenece."@es ;
+                 
+                 rdfs:subPropertyOf :isItemOf .
+
+
+
+###  http://purl.org/ceu/eco/1.0#belongsTo
+
+<http://purl.org/ceu/eco/1.0#belongsTo> rdf:type owl:ObjectProperty ;
+                                        
+                                        rdfs:label "belongs to"@en ,
+                                                   "pertenece a"@es ;
+                                        
+                                        rdfs:comment "Property that relates an element or object with a collection that belongs to."@en ,
+                                                     "Propiedad que relaciona un elemento u objeto con una colección a la que pertenece."@es ;
+                                        
+                                        rdfs:range <http://purl.org/ceu/eco/1.0#Collection> .
+
+
+
+###  http://purl.org/ceu/eco/1.0#followedBy
+
+<http://purl.org/ceu/eco/1.0#followedBy> rdf:type owl:ObjectProperty ,
+                                                  owl:TransitiveProperty ;
+                                         
+                                         rdfs:label "followed by"@en ,
+                                                    "seguido por"@es ;
+                                         
+                                         rdfs:comment "Property that relates an ordered item with another that follows it after in the same ordered collection."@en ,
+                                                      "Propiedad que relaciona un item ordenado con otro que le sigue después en una misma colección ordenada."@es ;
+                                         
+                                         rdfs:range <http://purl.org/ceu/eco/1.0#OrderedItem> ;
+                                         
+                                         rdfs:domain <http://purl.org/ceu/eco/1.0#OrderedItem> ;
+                                         
+                                         owl:inverseOf <http://purl.org/ceu/eco/1.0#precededBy> .
+
+
+
 ###  http://purl.org/ceu/eco/1.0#hasContent
 
-<http://purl.org/ceu/eco/1.0#hasContent> rdf:type owl:ObjectProperty ;
+<http://purl.org/ceu/eco/1.0#hasContent> rdf:type owl:FunctionalProperty ,
+                                                  owl:ObjectProperty ;
+                                         
+                                         rdfs:label "has content"@en ,
+                                                    "contiene"@es ;
+                                         
+                                         rdfs:comment "Property that relates an item with the element or object that contains."@en ,
+                                                      "Propiedad que relaciona un Item con el elemento u objecto que contiene."@es ;
+                                         
+                                         rdfs:domain <http://purl.org/ceu/eco/1.0#Item> ;
                                          
                                          rdfs:subPropertyOf owl:topObjectProperty .
 
@@ -42,12 +117,17 @@
 
 ###  http://purl.org/ceu/eco/1.0#hasElement
 
-<http://purl.org/ceu/eco/1.0#hasElement> rdf:type owl:AsymmetricProperty ,
-                                                  owl:ObjectProperty ;
+<http://purl.org/ceu/eco/1.0#hasElement> rdf:type owl:ObjectProperty ;
+                                         
+                                         rdfs:label "has element"@en ,
+                                                    "tiene elemento"@es ;
+                                         
+                                         rdfs:comment "Property that relates a collection with an element that belongs to it."@en ,
+                                                      "Propiedad que relaciona una colección con un elemento que pertenece a ella."@es ;
                                          
                                          rdfs:domain <http://purl.org/ceu/eco/1.0#Collection> ;
                                          
-                                         owl:inverseOf <http://purl.org/ceu/eco/1.0#isElementOf> ;
+                                         owl:inverseOf <http://purl.org/ceu/eco/1.0#belongsTo> ;
                                          
                                          owl:propertyChainAxiom ( <http://purl.org/ceu/eco/1.0#hasItem>
                                                                   <http://purl.org/ceu/eco/1.0#hasContent>
@@ -59,6 +139,12 @@
 
 <http://purl.org/ceu/eco/1.0#hasFirstItem> rdf:type owl:FunctionalProperty ,
                                                     owl:ObjectProperty ;
+                                           
+                                           rdfs:label "has first item"@en ,
+                                                      "tiene primer item"@es ;
+                                           
+                                           rdfs:comment "Property that relates an ordered collection with its first item."@en ,
+                                                        "Propiedad que relaciona una colección ordenada con su primer item."@es ;
                                            
                                            rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
                                            
@@ -79,7 +165,18 @@
 
 ###  http://purl.org/ceu/eco/1.0#hasItem
 
-<http://purl.org/ceu/eco/1.0#hasItem> rdf:type owl:ObjectProperty .
+<http://purl.org/ceu/eco/1.0#hasItem> rdf:type owl:InverseFunctionalProperty ,
+                                               owl:ObjectProperty ;
+                                      
+                                      rdfs:label "has item"@en ,
+                                                 "tiene item"@es ;
+                                      
+                                      rdfs:comment "Property that relates a collection with an item that is part of it."@en ,
+                                                   "Propiedad que relaciona una colección con un item que forma parte de ella."@es ;
+                                      
+                                      rdfs:domain <http://purl.org/ceu/eco/1.0#Collection> ;
+                                      
+                                      rdfs:range <http://purl.org/ceu/eco/1.0#Item> .
 
 
 
@@ -87,6 +184,12 @@
 
 <http://purl.org/ceu/eco/1.0#hasLastItem> rdf:type owl:FunctionalProperty ,
                                                    owl:ObjectProperty ;
+                                          
+                                          rdfs:label "has last item"@en ,
+                                                     "tiene último item"@es ;
+                                          
+                                          rdfs:comment "Property that relates an ordered collection with its last item."@en ,
+                                                       "Propiedad que relaciona una colección ordenada con su último item."@es ;
                                           
                                           rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
                                           
@@ -103,25 +206,31 @@
 
 ###  http://purl.org/ceu/eco/1.0#hasNextItem
 
-<http://purl.org/ceu/eco/1.0#hasNextItem> rdf:type owl:AsymmetricProperty ,
-                                                   owl:FunctionalProperty ,
+<http://purl.org/ceu/eco/1.0#hasNextItem> rdf:type owl:FunctionalProperty ,
                                                    owl:InverseFunctionalProperty ,
-                                                   owl:IrreflexiveProperty ,
                                                    owl:ObjectProperty ;
                                           
-                                          rdfs:domain <http://purl.org/ceu/eco/1.0#OrderedItem> ;
+                                          rdfs:label "has next item"@en ,
+                                                     "tiene siguiente item"@es ;
                                           
-                                          rdfs:range <http://purl.org/ceu/eco/1.0#OrderedItem> ;
+                                          rdfs:comment "Property that relates an ordered item with other that follows it immediately in the same ordered collection."@en ,
+                                                       "Propiedad que relaciona un item ordenado con otro que le sigue inmediatamente en un misma colección ordenada."@es ;
                                           
-                                          owl:inverseOf <http://purl.org/ceu/eco/1.0#hasPreviousItem> ;
+                                          rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#followedBy> ;
                                           
-                                          rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#isFollowedBy> .
+                                          owl:inverseOf <http://purl.org/ceu/eco/1.0#hasPreviousItem> .
 
 
 
 ###  http://purl.org/ceu/eco/1.0#hasOrderedItem
 
 <http://purl.org/ceu/eco/1.0#hasOrderedItem> rdf:type owl:ObjectProperty ;
+                                             
+                                             rdfs:label "has ordered item"@en ,
+                                                        "tiene item ordenado"@es ;
+                                             
+                                             rdfs:comment "Property that relates an ordered collection with an ordered item that is part of it."@en ,
+                                                          "Propiedad que relaciona una colección ordenada con un item ordenado que forma parte de ella."@es ;
                                              
                                              rdfs:domain <http://purl.org/ceu/eco/1.0#OrderedCollection> ;
                                              
@@ -130,6 +239,9 @@
                                              rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#hasItem> ;
                                              
                                              owl:propertyChainAxiom ( <http://purl.org/ceu/eco/1.0#hasOrderedItem>
+                                                                      <http://purl.org/ceu/eco/1.0#hasPreviousItem>
+                                                                    ) ,
+                                                                    ( <http://purl.org/ceu/eco/1.0#hasOrderedItem>
                                                                       <http://purl.org/ceu/eco/1.0#hasNextItem>
                                                                     ) .
 
@@ -137,44 +249,34 @@
 
 ###  http://purl.org/ceu/eco/1.0#hasPreviousItem
 
-<http://purl.org/ceu/eco/1.0#hasPreviousItem> rdf:type owl:AsymmetricProperty ,
-                                                       owl:FunctionalProperty ,
+<http://purl.org/ceu/eco/1.0#hasPreviousItem> rdf:type owl:FunctionalProperty ,
                                                        owl:InverseFunctionalProperty ,
-                                                       owl:IrreflexiveProperty ,
                                                        owl:ObjectProperty ;
                                               
-                                              rdfs:domain <http://purl.org/ceu/eco/1.0#OrderedItem> ;
+                                              rdfs:label "has previous item"@en ,
+                                                         "tiene previo item"@es ;
                                               
-                                              rdfs:range <http://purl.org/ceu/eco/1.0#OrderedItem> ;
+                                              rdfs:comment "Property that relates an ordered item with another that precedes it immediately in the same ordered collection."@en ,
+                                                           "Propiedad que relaciona un item ordenado con otro que le precede inmediatamente en una misma colección ordenada."@es ;
                                               
-                                              rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#isPrecededBy> .
+                                              rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#precededBy> .
 
 
 
-###  http://purl.org/ceu/eco/1.0#isElementOf
+###  http://purl.org/ceu/eco/1.0#precededBy
 
-<http://purl.org/ceu/eco/1.0#isElementOf> rdf:type owl:AsymmetricProperty ,
-                                                   owl:ObjectProperty ;
-                                          
-                                          rdfs:range <http://purl.org/ceu/eco/1.0#Collection> .
-
-
-
-###  http://purl.org/ceu/eco/1.0#isFollowedBy
-
-<http://purl.org/ceu/eco/1.0#isFollowedBy> rdf:type owl:AsymmetricProperty ,
-                                                    owl:IrreflexiveProperty ,
-                                                    owl:ObjectProperty ,
-                                                    owl:TransitiveProperty .
-
-
-
-###  http://purl.org/ceu/eco/1.0#isPrecededBy
-
-<http://purl.org/ceu/eco/1.0#isPrecededBy> rdf:type owl:AsymmetricProperty ,
-                                                    owl:IrreflexiveProperty ,
-                                                    owl:ObjectProperty ,
-                                                    owl:TransitiveProperty .
+<http://purl.org/ceu/eco/1.0#precededBy> rdf:type owl:ObjectProperty ,
+                                                  owl:TransitiveProperty ;
+                                         
+                                         rdfs:label "preceded by"@en ,
+                                                    "precedido por"@es ;
+                                         
+                                         rdfs:comment "Property that relates an ordered item with another that precedes it in the same ordered collection."@en ,
+                                                      "Propiedad que relaciona un item ordenado con otro que le precede en una misma colección ordenada."@es ;
+                                         
+                                         rdfs:domain <http://purl.org/ceu/eco/1.0#OrderedItem> ;
+                                         
+                                         rdfs:range <http://purl.org/ceu/eco/1.0#OrderedItem> .
 
 
 
@@ -192,6 +294,12 @@
 <http://purl.org/ceu/eco/1.0#hasCardinality> rdf:type owl:DatatypeProperty ,
                                                       owl:FunctionalProperty ;
                                              
+                                             rdfs:label "has cardinality"@en ,
+                                                        "tiene cardinalidad"@es ;
+                                             
+                                             rdfs:comment "Property that relates a collection with the number of elements or objects that contains."@en ,
+                                                          "Propiedad que relaciona una colección con el número de elementos que contiene."@es ;
+                                             
                                              rdfs:domain <http://purl.org/ceu/eco/1.0#Collection> ;
                                              
                                              rdfs:range xsd:nonNegativeInteger .
@@ -202,6 +310,12 @@
 
 <http://purl.org/ceu/eco/1.0#hasIndex> rdf:type owl:DatatypeProperty ,
                                                 owl:FunctionalProperty ;
+                                       
+                                       rdfs:label "has index"@en ,
+                                                  "tiene índice"@es ;
+                                       
+                                       rdfs:comment "Property that relates an ordered item with its position in an ordered collection."@en ,
+                                                    "Propiedad que relaciona un item ordenado con su posición en una colección ordenada."@es ;
                                        
                                        rdfs:domain <http://purl.org/ceu/eco/1.0#OrderedItem> ;
                                        
@@ -404,12 +518,6 @@
                                    rdfs:label "Item"@en ,
                                               "Item"@es ;
                                    
-                                   rdfs:subClassOf [ rdf:type owl:Restriction ;
-                                                     owl:onProperty [ owl:inverseOf <http://purl.org/ceu/eco/1.0#hasItem>
-                                                                    ] ;
-                                                     owl:someValuesFrom <http://purl.org/ceu/eco/1.0#Collection>
-                                                   ] ;
-                                   
                                    rdfs:comment "An item is a container for elements of collections. It's a workaround to allow duplicate elements in a collections."@en ,
                                                 "Un item es un contenedor para los elementos de las colecciones. Es un rodeo para permitir la duplicidad de elementos en la colecciones."@es .
 
@@ -481,7 +589,22 @@
                                                 rdfs:label "Ordered collection"@en ,
                                                            "Colección ordenada"@es ;
                                                 
-                                                rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Collection> ;
+                                                owl:equivalentClass [ rdf:type owl:Class ;
+                                                                      owl:intersectionOf ( <http://purl.org/ceu/eco/1.0#Collection>
+                                                                                           [ rdf:type owl:Restriction ;
+                                                                                             owl:onProperty <http://purl.org/ceu/eco/1.0#hasItem> ;
+                                                                                             owl:allValuesFrom <http://purl.org/ceu/eco/1.0#OrderedItem>
+                                                                                           ]
+                                                                                           [ rdf:type owl:Restriction ;
+                                                                                             owl:onProperty <http://purl.org/ceu/eco/1.0#hasFirstItem> ;
+                                                                                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                                                                           ]
+                                                                                           [ rdf:type owl:Restriction ;
+                                                                                             owl:onProperty <http://purl.org/ceu/eco/1.0#hasLastItem> ;
+                                                                                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                                                                           ]
+                                                                                         )
+                                                                    ] ;
                                                 
                                                 rdfs:comment "An ordered collection is a collection where elements follow a sequential order."@en ,
                                                              "Una colección ordenada es una colección donde los elementos siguen un orden secuencial."@es .
@@ -495,11 +618,23 @@
                                           rdfs:label "Ordered item"@en ,
                                                      "Item ordenado"@es ;
                                           
-                                          rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Item> ,
-                                                          [ rdf:type owl:Restriction ;
-                                                            owl:onProperty <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                                                            owl:cardinality "1"^^xsd:nonNegativeInteger
-                                                          ] ;
+                                          owl:equivalentClass [ rdf:type owl:Class ;
+                                                                owl:intersectionOf ( <http://purl.org/ceu/eco/1.0#Item>
+                                                                                     [ rdf:type owl:Restriction ;
+                                                                                       owl:onProperty <http://purl.org/ceu/eco/1.0#hasNextItem> ;
+                                                                                       owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                                                                     ]
+                                                                                     [ rdf:type owl:Restriction ;
+                                                                                       owl:onProperty <http://purl.org/ceu/eco/1.0#hasPreviousItem> ;
+                                                                                       owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                                                                     ]
+                                                                                     [ rdf:type owl:Restriction ;
+                                                                                       owl:onProperty <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                                                                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                                                       owl:onDataRange xsd:positiveInteger
+                                                                                     ]
+                                                                                   )
+                                                              ] ;
                                           
                                           rdfs:comment "An ordered item is an item that is part of an ordered sequence of items."@en ,
                                                        "Un item ordenado es un item que forma parte de una secuencia ordenada de items."@es .
