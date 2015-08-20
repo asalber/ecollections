@@ -5,7 +5,6 @@
     <!ENTITY owl "http://www.w3.org/2002/07/owl#" >
     <!ENTITY dc "http://purl.org/dc/elements/1.1/" >
     <!ENTITY xsd "http://www.w3.org/2001/XMLSchema#" >
-    <!ENTITY xml "http://www.w3.org/XML/1998/namespace" >
     <!ENTITY rdfs "http://www.w3.org/2000/01/rdf-schema#" >
     <!ENTITY rdf "http://www.w3.org/1999/02/22-rdf-syntax-ns#" >
 ]>
@@ -15,7 +14,6 @@
      xml:base="http://purl.org/ceu/lco"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
-     xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:dc="http://purl.org/dc/elements/1.1/">
@@ -43,43 +41,43 @@
     
 
 
-    <!-- http://purl.org/ceu/lco#hasContent -->
+    <!-- http://purl.org/ceu/eco/1.0#hasContent -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#hasContent">
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#hasContent">
         <rdfs:subPropertyOf rdf:resource="&owl;topObjectProperty"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://purl.org/ceu/lco#hasElement -->
+    <!-- http://purl.org/ceu/eco/1.0#hasElement -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#hasElement">
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#hasElement">
         <rdf:type rdf:resource="&owl;AsymmetricProperty"/>
-        <rdfs:domain rdf:resource="http://purl.org/ceu/lco#Collection"/>
-        <owl:inverseOf rdf:resource="http://purl.org/ceu/lco#isElementOf"/>
+        <rdfs:domain rdf:resource="http://purl.org/ceu/eco/1.0#Collection"/>
+        <owl:inverseOf rdf:resource="http://purl.org/ceu/eco/1.0#isElementOf"/>
         <owl:propertyChainAxiom rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://purl.org/ceu/lco#hasItem"/>
-            <rdf:Description rdf:about="http://purl.org/ceu/lco#hasContent"/>
+            <rdf:Description rdf:about="http://purl.org/ceu/eco/1.0#hasItem"/>
+            <rdf:Description rdf:about="http://purl.org/ceu/eco/1.0#hasContent"/>
         </owl:propertyChainAxiom>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://purl.org/ceu/lco#hasFirstItem -->
+    <!-- http://purl.org/ceu/eco/1.0#hasFirstItem -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#hasFirstItem">
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#hasFirstItem">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-        <rdfs:subPropertyOf rdf:resource="http://purl.org/ceu/lco#hasOrderedItem"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.org/ceu/eco/1.0#hasOrderedItem"/>
         <rdfs:range>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://purl.org/ceu/lco#OrderedItem"/>
+                    <rdf:Description rdf:about="http://purl.org/ceu/eco/1.0#OrderedItem"/>
                     <owl:Restriction>
-                        <owl:onProperty rdf:resource="http://purl.org/ceu/lco#hasPreviousItem"/>
+                        <owl:onProperty rdf:resource="http://purl.org/ceu/eco/1.0#hasPreviousItem"/>
                         <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:cardinality>
                     </owl:Restriction>
                     <owl:Restriction>
-                        <owl:onProperty rdf:resource="http://purl.org/ceu/lco#hasIndex"/>
+                        <owl:onProperty rdf:resource="http://purl.org/ceu/eco/1.0#hasIndex"/>
                         <owl:hasValue rdf:datatype="&xsd;positiveInteger">1</owl:hasValue>
                     </owl:Restriction>
                 </owl:intersectionOf>
@@ -89,23 +87,23 @@
     
 
 
-    <!-- http://purl.org/ceu/lco#hasItem -->
+    <!-- http://purl.org/ceu/eco/1.0#hasItem -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#hasItem"/>
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#hasItem"/>
     
 
 
-    <!-- http://purl.org/ceu/lco#hasLastItem -->
+    <!-- http://purl.org/ceu/eco/1.0#hasLastItem -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#hasLastItem">
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#hasLastItem">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-        <rdfs:subPropertyOf rdf:resource="http://purl.org/ceu/lco#hasOrderedItem"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.org/ceu/eco/1.0#hasOrderedItem"/>
         <rdfs:range>
             <owl:Class>
                 <owl:intersectionOf rdf:parseType="Collection">
-                    <rdf:Description rdf:about="http://purl.org/ceu/lco#OrderedItem"/>
+                    <rdf:Description rdf:about="http://purl.org/ceu/eco/1.0#OrderedItem"/>
                     <owl:Restriction>
-                        <owl:onProperty rdf:resource="http://purl.org/ceu/lco#hasNextItem"/>
+                        <owl:onProperty rdf:resource="http://purl.org/ceu/eco/1.0#hasNextItem"/>
                         <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">0</owl:cardinality>
                     </owl:Restriction>
                 </owl:intersectionOf>
@@ -115,61 +113,61 @@
     
 
 
-    <!-- http://purl.org/ceu/lco#hasNextItem -->
+    <!-- http://purl.org/ceu/eco/1.0#hasNextItem -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#hasNextItem">
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#hasNextItem">
         <rdf:type rdf:resource="&owl;AsymmetricProperty"/>
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
         <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
         <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
-        <rdfs:range rdf:resource="http://purl.org/ceu/lco#OrderedItem"/>
-        <rdfs:domain rdf:resource="http://purl.org/ceu/lco#OrderedItem"/>
-        <owl:inverseOf rdf:resource="http://purl.org/ceu/lco#hasPreviousItem"/>
-        <rdfs:subPropertyOf rdf:resource="http://purl.org/ceu/lco#isFollowedBy"/>
+        <rdfs:domain rdf:resource="http://purl.org/ceu/eco/1.0#OrderedItem"/>
+        <rdfs:range rdf:resource="http://purl.org/ceu/eco/1.0#OrderedItem"/>
+        <owl:inverseOf rdf:resource="http://purl.org/ceu/eco/1.0#hasPreviousItem"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.org/ceu/eco/1.0#isFollowedBy"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://purl.org/ceu/lco#hasOrderedItem -->
+    <!-- http://purl.org/ceu/eco/1.0#hasOrderedItem -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#hasOrderedItem">
-        <rdfs:domain rdf:resource="http://purl.org/ceu/lco#OrderedCollection"/>
-        <rdfs:range rdf:resource="http://purl.org/ceu/lco#OrderedItem"/>
-        <rdfs:subPropertyOf rdf:resource="http://purl.org/ceu/lco#hasItem"/>
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#hasOrderedItem">
+        <rdfs:domain rdf:resource="http://purl.org/ceu/eco/1.0#OrderedCollection"/>
+        <rdfs:range rdf:resource="http://purl.org/ceu/eco/1.0#OrderedItem"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.org/ceu/eco/1.0#hasItem"/>
         <owl:propertyChainAxiom rdf:parseType="Collection">
-            <rdf:Description rdf:about="http://purl.org/ceu/lco#hasOrderedItem"/>
-            <rdf:Description rdf:about="http://purl.org/ceu/lco#hasNextItem"/>
+            <rdf:Description rdf:about="http://purl.org/ceu/eco/1.0#hasOrderedItem"/>
+            <rdf:Description rdf:about="http://purl.org/ceu/eco/1.0#hasNextItem"/>
         </owl:propertyChainAxiom>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://purl.org/ceu/lco#hasPreviousItem -->
+    <!-- http://purl.org/ceu/eco/1.0#hasPreviousItem -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#hasPreviousItem">
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#hasPreviousItem">
         <rdf:type rdf:resource="&owl;AsymmetricProperty"/>
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
         <rdf:type rdf:resource="&owl;InverseFunctionalProperty"/>
         <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
-        <rdfs:range rdf:resource="http://purl.org/ceu/lco#OrderedItem"/>
-        <rdfs:domain rdf:resource="http://purl.org/ceu/lco#OrderedItem"/>
-        <rdfs:subPropertyOf rdf:resource="http://purl.org/ceu/lco#isPrecededBy"/>
+        <rdfs:domain rdf:resource="http://purl.org/ceu/eco/1.0#OrderedItem"/>
+        <rdfs:range rdf:resource="http://purl.org/ceu/eco/1.0#OrderedItem"/>
+        <rdfs:subPropertyOf rdf:resource="http://purl.org/ceu/eco/1.0#isPrecededBy"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://purl.org/ceu/lco#isElementOf -->
+    <!-- http://purl.org/ceu/eco/1.0#isElementOf -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#isElementOf">
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#isElementOf">
         <rdf:type rdf:resource="&owl;AsymmetricProperty"/>
-        <rdfs:range rdf:resource="http://purl.org/ceu/lco#Collection"/>
+        <rdfs:range rdf:resource="http://purl.org/ceu/eco/1.0#Collection"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://purl.org/ceu/lco#isFollowedBy -->
+    <!-- http://purl.org/ceu/eco/1.0#isFollowedBy -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#isFollowedBy">
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#isFollowedBy">
         <rdf:type rdf:resource="&owl;AsymmetricProperty"/>
         <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
         <rdf:type rdf:resource="&owl;TransitiveProperty"/>
@@ -177,9 +175,9 @@
     
 
 
-    <!-- http://purl.org/ceu/lco#isPrecededBy -->
+    <!-- http://purl.org/ceu/eco/1.0#isPrecededBy -->
 
-    <owl:ObjectProperty rdf:about="http://purl.org/ceu/lco#isPrecededBy">
+    <owl:ObjectProperty rdf:about="http://purl.org/ceu/eco/1.0#isPrecededBy">
         <rdf:type rdf:resource="&owl;AsymmetricProperty"/>
         <rdf:type rdf:resource="&owl;IrreflexiveProperty"/>
         <rdf:type rdf:resource="&owl;TransitiveProperty"/>
@@ -198,21 +196,21 @@
     
 
 
-    <!-- http://purl.org/ceu/lco#hasCardinality -->
+    <!-- http://purl.org/ceu/eco/1.0#hasCardinality -->
 
-    <owl:DatatypeProperty rdf:about="http://purl.org/ceu/lco#hasCardinality">
+    <owl:DatatypeProperty rdf:about="http://purl.org/ceu/eco/1.0#hasCardinality">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://purl.org/ceu/lco#Collection"/>
+        <rdfs:domain rdf:resource="http://purl.org/ceu/eco/1.0#Collection"/>
         <rdfs:range rdf:resource="&xsd;nonNegativeInteger"/>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://purl.org/ceu/lco#hasIndex -->
+    <!-- http://purl.org/ceu/eco/1.0#hasIndex -->
 
-    <owl:DatatypeProperty rdf:about="http://purl.org/ceu/lco#hasIndex">
+    <owl:DatatypeProperty rdf:about="http://purl.org/ceu/eco/1.0#hasIndex">
         <rdf:type rdf:resource="&owl;FunctionalProperty"/>
-        <rdfs:domain rdf:resource="http://purl.org/ceu/lco#OrderedItem"/>
+        <rdfs:domain rdf:resource="http://purl.org/ceu/eco/1.0#OrderedItem"/>
         <rdfs:range rdf:resource="&xsd;positiveInteger"/>
     </owl:DatatypeProperty>
     
@@ -234,8 +232,8 @@
     <owl:Class rdf:about="http://purl.org/ceu/eco#Heterocombination">
         <rdfs:label xml:lang="en">Heterocombination</rdfs:label>
         <rdfs:label xml:lang="es">Heterocombinación</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Box"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Heteroset"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Box"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Heteroset"/>
         <rdfs:comment xml:lang="en">An heterocombination is an heterogeneous, with uniqueness, non ordered and with fixed cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una heterocombinación es una colección heterogénea, con unicidad, no ordenada y de cardinalidad fija.</rdfs:comment>
     </owl:Class>
@@ -247,8 +245,8 @@
     <owl:Class rdf:about="http://purl.org/ceu/eco#Heteroranking">
         <rdfs:label xml:lang="en">Heteroranking</rdfs:label>
         <rdfs:label xml:lang="es">Heteroranking</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Heteroset"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#List"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Heteroset"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#List"/>
         <rdfs:comment xml:lang="en">An heteroranking is an heterogeneous, with uniqueness, ordered and with variable cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Un heteroranking es una colección heterogénea, con unicidad, ordenada y de cardinalidad variable.</rdfs:comment>
     </owl:Class>
@@ -262,7 +260,7 @@
         <rdfs:label xml:lang="es">Heterovariación</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco#Heterocombination"/>
         <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco#Heteroranking"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Tuple"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Tuple"/>
         <rdfs:comment xml:lang="en">An heterovariation is an heterogeneous, with uniqueness, ordered and with fixed cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una heterovariación es una colección heterogénea, con unicidad, ordenada y de cardinalidad fija.</rdfs:comment>
     </owl:Class>
@@ -274,7 +272,7 @@
     <owl:Class rdf:about="http://purl.org/ceu/eco#HomogeneousCollection">
         <rdfs:label xml:lang="en">Homogeneous collection</rdfs:label>
         <rdfs:label xml:lang="es">Colección homogénea</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Collection"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Collection"/>
         <rdfs:comment xml:lang="en">An homogeneous collection is a collection with all its element of the same type.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una coleccion homogénea es una colección donde todos los elementos son del mismo tipo.</rdfs:comment>
     </owl:Class>
@@ -287,8 +285,8 @@
         <rdfs:label xml:lang="en">Ranking</rdfs:label>
         <rdfs:label xml:lang="es">Ranking</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco#Heteroranking"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Sequence"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Set"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Sequence"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Set"/>
         <rdfs:comment xml:lang="en">A ranking is an homogeneous, with uniqueness, ordered and with variable cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Un ranking es una colección homogénea, con unicidad, ordenada y de cardinalidad variable.</rdfs:comment>
     </owl:Class>
@@ -302,237 +300,250 @@
         <rdfs:label xml:lang="es">Variación</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco#Heterovariation"/>
         <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco#Ranking"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Combination"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Vector"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Combination"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Vector"/>
         <rdfs:comment xml:lang="en">A variation is an homogeneous, with uniqueness, ordered and with fixed cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una variación es una colección homogénea, con unicidad, ordenada y de cardinalidad fija.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Box -->
+    <!-- http://purl.org/ceu/eco/1.0#Box -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Box">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Box">
         <rdfs:label xml:lang="en">Box</rdfs:label>
         <rdfs:label xml:lang="es">Caja</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#FixedCardinalityCollection"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Multiheteroset"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#FixedCardinalityCollection"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Multiheteroset"/>
         <rdfs:comment xml:lang="en">A box is an heterogeneous, without uniqueness, non ordered and with fixed cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una caja es una colección heterogénea, sin unicidad, no ordenada y de cardinalidad fija.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Collection -->
+    <!-- http://purl.org/ceu/eco/1.0#Collection -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Collection">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Collection">
         <rdfs:label xml:lang="en">Collection</rdfs:label>
         <rdfs:label xml:lang="es">Colección</rdfs:label>
-        <owl:disjointWith rdf:resource="http://purl.org/ceu/lco#Item"/>
+        <owl:disjointWith rdf:resource="http://purl.org/ceu/eco/1.0#Item"/>
         <rdfs:comment xml:lang="en">A collection is a group of objects or elements.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una colección es una agrupación de objetos o elementos.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Combination -->
+    <!-- http://purl.org/ceu/eco/1.0#Combination -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Combination">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Combination">
         <rdfs:label xml:lang="en">Combination</rdfs:label>
         <rdfs:label xml:lang="es">Combinación</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco#Heterocombination"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Multicombination"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Set"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Multicombination"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Set"/>
         <rdfs:comment xml:lang="en">A combination is an homogeneous, with uniqueness, non ordered and with fixed cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una combinación es una colección homogénea, con unicidad, no ordenada y de cardinalidad fija.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Element -->
+    <!-- http://purl.org/ceu/eco/1.0#Element -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Element"/>
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Element">
+        <rdfs:label xml:lang="en">Element</rdfs:label>
+        <rdfs:label xml:lang="es">Elemento</rdfs:label>
+        <rdfs:comment xml:lang="en">Element or object beloging to a collection.</rdfs:comment>
+        <rdfs:comment xml:lang="es">Elemento u objeto perteneciente a una colección.</rdfs:comment>
+    </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#FixedCardinalityCollection -->
+    <!-- http://purl.org/ceu/eco/1.0#FixedCardinalityCollection -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#FixedCardinalityCollection">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#FixedCardinalityCollection">
         <rdfs:label xml:lang="en">Fixed cardinality collection</rdfs:label>
         <rdfs:label xml:lang="es">Colección de cardinalidad fija</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Collection"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Collection"/>
         <rdfs:comment xml:lang="en">A fixed cardiality collection is a collection of a fixed number of elements.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una colección de cardinalidad fija es una colección con un número fijo de elementos.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Heteroset -->
+    <!-- http://purl.org/ceu/eco/1.0#Heteroset -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Heteroset">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Heteroset">
         <rdfs:label xml:lang="en">Heteroset</rdfs:label>
         <rdfs:label xml:lang="es">Heteroconjunto</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Multiheteroset"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#UniquenessCollection"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Multiheteroset"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#UniquenessCollection"/>
         <rdfs:comment xml:lang="en">A heteroset is an heterogeneous, with uniqueness, non ordered and with variable cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Un heteroconjunto es una colección heterogénea, con unicidad, no ordenada y de cardinalidad variable.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Item -->
+    <!-- http://purl.org/ceu/eco/1.0#Item -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Item">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Item">
+        <rdfs:label xml:lang="en">Item</rdfs:label>
+        <rdfs:label xml:lang="es">Item</rdfs:label>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty>
                     <rdf:Description>
-                        <owl:inverseOf rdf:resource="http://purl.org/ceu/lco#hasItem"/>
+                        <owl:inverseOf rdf:resource="http://purl.org/ceu/eco/1.0#hasItem"/>
                     </rdf:Description>
                 </owl:onProperty>
-                <owl:someValuesFrom rdf:resource="http://purl.org/ceu/lco#Collection"/>
+                <owl:someValuesFrom rdf:resource="http://purl.org/ceu/eco/1.0#Collection"/>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">An item is a container for elements of collections. It&apos;s a workaround to allow duplicate elements in a collections.</rdfs:comment>
+        <rdfs:comment xml:lang="es">Un item es un contenedor para los elementos de las colecciones. Es un rodeo para permitir la duplicidad de elementos en la colecciones.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#List -->
+    <!-- http://purl.org/ceu/eco/1.0#List -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#List">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#List">
         <rdfs:label xml:lang="en">List</rdfs:label>
         <rdfs:label xml:lang="es">Lista</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Multiheteroset"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#OrderedCollection"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Multiheteroset"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#OrderedCollection"/>
         <rdfs:comment xml:lang="en">A list is an heterogeneous, without uniqueness, ordered and with variable cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una lista es una colección heterogénea, sin unicidad, ordenada y de cardinalidad variable.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Multicombination -->
+    <!-- http://purl.org/ceu/eco/1.0#Multicombination -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Multicombination">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Multicombination">
         <rdfs:label xml:lang="en">Multicombination</rdfs:label>
         <rdfs:label xml:lang="es">Multicombinación</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Box"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Multiset"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Box"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Multiset"/>
         <rdfs:comment xml:lang="en">A multicombination is an homogeneous, without uniqueness, non ordered and with fixed cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una multicombinación es una colección homogénea, sin unicidad, no ordenada y de cardinalidad fija.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Multiheteroset -->
+    <!-- http://purl.org/ceu/eco/1.0#Multiheteroset -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Multiheteroset">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Multiheteroset">
         <rdfs:label xml:lang="en">Multiheteroset</rdfs:label>
         <rdfs:label xml:lang="es">Multiheteroconjunto</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Collection"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Collection"/>
         <rdfs:comment xml:lang="en">A multiheteroset is an heterogeneous, without uniqueness, non ordered and with variable cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Un multiheteroconjunto es una colección heterogénea, sin unicidad, no ordenada y de cardilnalidad variable.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Multiset -->
+    <!-- http://purl.org/ceu/eco/1.0#Multiset -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Multiset">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Multiset">
         <rdfs:label xml:lang="en">Multiset</rdfs:label>
         <rdfs:label xml:lang="es">Multiconjunto</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco#HomogeneousCollection"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Multiheteroset"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Multiheteroset"/>
         <rdfs:comment xml:lang="en">A multiset is an homogeneous, without uniqueness, non ordered and with variable cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Un multiconjunto es una colección homogenea, sin unicidad, no ordenada y de cardinalidad variable.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#OrderedCollection -->
+    <!-- http://purl.org/ceu/eco/1.0#OrderedCollection -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#OrderedCollection">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#OrderedCollection">
         <rdfs:label xml:lang="en">Ordered collection</rdfs:label>
         <rdfs:label xml:lang="es">Colección ordenada</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Collection"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Collection"/>
         <rdfs:comment xml:lang="en">An ordered collection is a collection where elements follow a sequential order.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una colección ordenada es una colección donde los elementos siguen un orden secuencial.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#OrderedItem -->
+    <!-- http://purl.org/ceu/eco/1.0#OrderedItem -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#OrderedItem">
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Item"/>
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#OrderedItem">
+        <rdfs:label xml:lang="en">Ordered item</rdfs:label>
+        <rdfs:label xml:lang="es">Item ordenado</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Item"/>
         <rdfs:subClassOf>
             <owl:Restriction>
-                <owl:onProperty rdf:resource="http://purl.org/ceu/lco#hasIndex"/>
+                <owl:onProperty rdf:resource="http://purl.org/ceu/eco/1.0#hasIndex"/>
                 <owl:cardinality rdf:datatype="&xsd;nonNegativeInteger">1</owl:cardinality>
             </owl:Restriction>
         </rdfs:subClassOf>
+        <rdfs:comment xml:lang="en">An ordered item is an item that is part of an ordered sequence of items.</rdfs:comment>
+        <rdfs:comment xml:lang="es">Un item ordenado es un item que forma parte de una secuencia ordenada de items.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Sequence -->
+    <!-- http://purl.org/ceu/eco/1.0#Sequence -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Sequence">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Sequence">
         <rdfs:label xml:lang="en">Sequence</rdfs:label>
         <rdfs:label xml:lang="es">Secuencia</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#List"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Multiset"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#List"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Multiset"/>
         <rdfs:comment xml:lang="en">A sequence is an homogeneous, without uniqueness, ordered and with variable cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una secuencia es una colección homogenea, sin unicidad, ordenada y de cardinalidad variable.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Set -->
+    <!-- http://purl.org/ceu/eco/1.0#Set -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Set">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Set">
         <rdfs:label xml:lang="en">Set</rdfs:label>
         <rdfs:label xml:lang="es">Conjunto</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Heteroset"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Multiset"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Heteroset"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Multiset"/>
         <rdfs:comment xml:lang="en">A set is an homogeneous, with uniqueness, non ordered and with variable cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Un conjunto es una colección homogénea, con unicidad, no ordenada y de cardinalidad fija.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Tuple -->
+    <!-- http://purl.org/ceu/eco/1.0#Tuple -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Tuple">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Tuple">
         <rdfs:label xml:lang="en">Tuple</rdfs:label>
         <rdfs:label xml:lang="es">Tupla</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Box"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#List"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Box"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#List"/>
         <rdfs:comment xml:lang="en">A tuple is an heterogeneous, without uniqueness, ordered and with fixed cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una tupla es una colección heterogénea, sin unicidad, ordenada y de cardinalidad fija.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#UniquenessCollection -->
+    <!-- http://purl.org/ceu/eco/1.0#UniquenessCollection -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#UniquenessCollection">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#UniquenessCollection">
         <rdfs:label xml:lang="en">Uniqueness collection</rdfs:label>
         <rdfs:label xml:lang="es">Colección con unicidad</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Collection"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Collection"/>
         <rdfs:comment xml:lang="en">An uniqueness collection is a collection where each element appears at most one time, that is, element repetitions are not allowed.</rdfs:comment>
         <rdfs:comment xml:lang="es">Una colección con unicidad es una colección donde cada elemento aparece a lo sumo una vez, es decir, donde no se permiten las repeticiones de elementos.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://purl.org/ceu/lco#Vector -->
+    <!-- http://purl.org/ceu/eco/1.0#Vector -->
 
-    <owl:Class rdf:about="http://purl.org/ceu/lco#Vector">
+    <owl:Class rdf:about="http://purl.org/ceu/eco/1.0#Vector">
         <rdfs:label xml:lang="en">Vector</rdfs:label>
         <rdfs:label xml:lang="es">Vector</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Multicombination"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Sequence"/>
-        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/lco#Tuple"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Multicombination"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Sequence"/>
+        <rdfs:subClassOf rdf:resource="http://purl.org/ceu/eco/1.0#Tuple"/>
         <rdfs:comment xml:lang="en">A vector is an homogeneous, without uniqueness, ordered and with fixed cardinality collection.</rdfs:comment>
         <rdfs:comment xml:lang="es">Un vector es una colección homogénea, sin unicidad, ordenada y de cardinalidad fija.</rdfs:comment>
     </owl:Class>
