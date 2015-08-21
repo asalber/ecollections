@@ -5,6 +5,8 @@
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix swrl: <http://www.w3.org/2003/11/swrl#> .
+@prefix swrlb: <http://www.w3.org/2003/11/swrlb#> .
 @base <http://purl.org/ceu/eco> .
 
 <http://purl.org/ceu/eco> rdf:type owl:Ontology ;
@@ -32,6 +34,22 @@
 #################################################################
 
 
+###  http://purl.org/ceu/eco#isFirstItemOf
+
+:isFirstItemOf rdf:type owl:ObjectProperty ;
+               
+               rdfs:label "is first item of"@en ,
+                          "es primer item de"@es ;
+               
+               rdfs:comment "Property that relates an ordered item with an ordered collection in which the item occupies the first position."@en ,
+                            "Propiedad que relaciona un item ordenado con una colección ordenada en la que el item ocupa la primera posición."@es ;
+               
+               rdfs:subPropertyOf :isOrderedItemOf ;
+               
+               owl:inverseOf <http://purl.org/ceu/eco/1.0#hasFirstItem> .
+
+
+
 ###  http://purl.org/ceu/eco#isItemOf
 
 :isItemOf rdf:type owl:FunctionalProperty ,
@@ -43,11 +61,23 @@
           rdfs:comment "Property that relates an item with the collection that is part of."@en ,
                        "Propiedad que relaciona un item con la colección de la que forma parte."@es ;
           
-          rdfs:range <http://purl.org/ceu/eco/1.0#Collection> ;
-          
-          rdfs:domain <http://purl.org/ceu/eco/1.0#Item> ;
-          
           owl:inverseOf <http://purl.org/ceu/eco/1.0#hasItem> .
+
+
+
+###  http://purl.org/ceu/eco#isLastItemOf
+
+:isLastItemOf rdf:type owl:ObjectProperty ;
+              
+              rdfs:label "is last item of"@en ,
+                         "es último item de"@es ;
+              
+              rdfs:comment "Property that relates an ordered item with an ordered collection in which the item occupies the last position."@en ,
+                           "Propiedad que relaciona un item ordenado con una colección ordenada en la que el item ocupa la última posición."@es ;
+              
+              rdfs:subPropertyOf :isOrderedItemOf ;
+              
+              owl:inverseOf <http://purl.org/ceu/eco/1.0#hasLastItem> .
 
 
 
@@ -61,7 +91,9 @@
                  rdfs:comment "Property that relates an ordered item with the ordered collection that belongs to."@en ,
                               "Propiedad que relaciona un item ordenado con la colección ordenada a la que pertenece."@es ;
                  
-                 rdfs:subPropertyOf :isItemOf .
+                 rdfs:subPropertyOf :isItemOf ;
+                 
+                 owl:inverseOf <http://purl.org/ceu/eco/1.0#hasOrderedItem> .
 
 
 
@@ -111,7 +143,11 @@
                                          
                                          rdfs:domain <http://purl.org/ceu/eco/1.0#Item> ;
                                          
-                                         rdfs:subPropertyOf owl:topObjectProperty .
+                                         rdfs:subPropertyOf owl:topObjectProperty ;
+                                         
+                                         rdfs:range [ rdf:type owl:Class ;
+                                                      owl:complementOf <http://purl.org/ceu/eco/1.0#Item>
+                                                    ] .
 
 
 
@@ -165,8 +201,7 @@
 
 ###  http://purl.org/ceu/eco/1.0#hasItem
 
-<http://purl.org/ceu/eco/1.0#hasItem> rdf:type owl:InverseFunctionalProperty ,
-                                               owl:ObjectProperty ;
+<http://purl.org/ceu/eco/1.0#hasItem> rdf:type owl:ObjectProperty ;
                                       
                                       rdfs:label "has item"@en ,
                                                  "tiene item"@es ;
@@ -236,14 +271,7 @@
                                              
                                              rdfs:range <http://purl.org/ceu/eco/1.0#OrderedItem> ;
                                              
-                                             rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#hasItem> ;
-                                             
-                                             owl:propertyChainAxiom ( <http://purl.org/ceu/eco/1.0#hasOrderedItem>
-                                                                      <http://purl.org/ceu/eco/1.0#hasPreviousItem>
-                                                                    ) ,
-                                                                    ( <http://purl.org/ceu/eco/1.0#hasOrderedItem>
-                                                                      <http://purl.org/ceu/eco/1.0#hasNextItem>
-                                                                    ) .
+                                             rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#hasItem> .
 
 
 
@@ -287,6 +315,25 @@
 #    Data properties
 #
 #################################################################
+
+
+###  http://purl.org/ceu/eco#hasError
+
+:hasError rdf:type owl:DatatypeProperty ;
+          
+          rdfs:label "has error"@en ,
+                     "tiene error"@es ;
+          
+          rdfs:comment "Property linking a resource that contains a logical error (which results in it belonging to the class owl:Nothing, therefore making the model inconsistent) to a textual description of that error."@en ,
+                       "Propiedad que relaciona un recurso que contiene un error lógico (que conlleva la pertenencia a la clase owl:Nothing, y por tanto hace el modelo inconsistente) con una descripción textual del error."@es ;
+          
+          rdfs:range xsd:string ;
+          
+          rdfs:domain [ rdf:type owl:Restriction ;
+                        owl:onProperty :hasError ;
+                        owl:cardinality "0"^^xsd:nonNegativeInteger
+                      ] .
+
 
 
 ###  http://purl.org/ceu/eco/1.0#hasCardinality
@@ -716,6 +763,356 @@
 
 
 
+
+
+#################################################################
+#
+#    Rules
+#
+#################################################################
+
+
+<urn:swrl#x> rdf:type swrl:Variable .
+<urn:swrl#collection> rdf:type swrl:Variable .
+<urn:swrl#item1> rdf:type swrl:Variable .
+<urn:swrl#item2> rdf:type swrl:Variable .
+<urn:swrl#collecction> rdf:type swrl:Variable .
+<urn:swrl#last> rdf:type swrl:Variable .
+<urn:swrl#n> rdf:type swrl:Variable .
+<urn:swrl#item> rdf:type swrl:Variable .
+<urn:swrl#nextitem> rdf:type swrl:Variable .
+<urn:swrl#index> rdf:type swrl:Variable .
+<urn:swrl#nextindex> rdf:type swrl:Variable .
+<urn:swrl#collectionl> rdf:type swrl:Variable .
+<urn:swrl#i> rdf:type swrl:Variable .
+<urn:swrl#j> rdf:type swrl:Variable .
+<urn:swrl#current> rdf:type swrl:Variable .
+<urn:swrl#next> rdf:type swrl:Variable .
+[ rdf:type swrl:Imp ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                          swrl:argument2 <urn:swrl#nextindex> ;
+                          swrl:argument1 <urn:swrl#nextitem>
+                        ]
+            ] ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasNextItem> ;
+                          swrl:argument1 <urn:swrl#item> ;
+                          swrl:argument2 <urn:swrl#nextitem>
+                        ] ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                                     swrl:argument2 <urn:swrl#index> ;
+                                     swrl:argument1 <urn:swrl#item>
+                                   ] ;
+                         rdf:rest [ rdf:type swrl:AtomList ;
+                                    rdf:rest rdf:nil ;
+                                    rdf:first [ rdf:type swrl:BuiltinAtom ;
+                                                swrl:builtin swrlb:add ;
+                                                swrl:arguments [ rdf:type rdf:List ;
+                                                                 rdf:first <urn:swrl#nextindex> ;
+                                                                 rdf:rest [ rdf:type rdf:List ;
+                                                                            rdf:first <urn:swrl#index> ;
+                                                                            rdf:rest [ rdf:type rdf:List ;
+                                                                                       rdf:first 1 ;
+                                                                                       rdf:rest rdf:nil
+                                                                                     ]
+                                                                          ]
+                                                               ]
+                                              ]
+                                  ]
+                       ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest [ rdf:type swrl:AtomList ;
+                                    rdf:rest rdf:nil ;
+                                    rdf:first [ rdf:type swrl:BuiltinAtom ;
+                                                swrl:builtin swrlb:add ;
+                                                swrl:arguments [ rdf:type rdf:List ;
+                                                                 rdf:first <urn:swrl#nextindex> ;
+                                                                 rdf:rest [ rdf:type rdf:List ;
+                                                                            rdf:first <urn:swrl#index> ;
+                                                                            rdf:rest [ rdf:type rdf:List ;
+                                                                                       rdf:first 1 ;
+                                                                                       rdf:rest rdf:nil
+                                                                                     ]
+                                                                          ]
+                                                               ]
+                                              ]
+                                  ] ;
+                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                                     swrl:argument1 <urn:swrl#current> ;
+                                     swrl:argument2 <urn:swrl#index>
+                                   ]
+                       ] ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasNextItem> ;
+                          swrl:argument1 <urn:swrl#current> ;
+                          swrl:argument2 <urn:swrl#next>
+                        ]
+            ] ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                          swrl:argument1 <urn:swrl#next> ;
+                          swrl:argument2 <urn:swrl#nextindex>
+                        ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:first [ rdf:type swrl:ClassAtom ;
+                          swrl:argument1 <urn:swrl#collecction> ;
+                          swrl:classPredicate [ rdf:type owl:Class ;
+                                                owl:complementOf <http://purl.org/ceu/eco/1.0#UniquenessCollection>
+                                              ]
+                        ] ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasLastItem> ;
+                                     swrl:argument1 <urn:swrl#collection> ;
+                                     swrl:argument2 <urn:swrl#last>
+                                   ] ;
+                         rdf:rest [ rdf:type swrl:AtomList ;
+                                    rdf:rest rdf:nil ;
+                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                                                swrl:argument1 <urn:swrl#last> ;
+                                                swrl:argument2 <urn:swrl#n>
+                                              ]
+                                  ]
+                       ]
+            ] ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasCardinality> ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#n>
+                        ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasNextItem> ;
+                          swrl:argument1 <urn:swrl#item1> ;
+                          swrl:argument2 <urn:swrl#item2>
+                        ]
+            ] ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#item1>
+                        ] ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
+                                     swrl:argument1 <urn:swrl#collection> ;
+                                     swrl:argument2 <urn:swrl#item2>
+                                   ] ;
+                         rdf:rest [ rdf:type swrl:AtomList ;
+                                    rdf:rest [ rdf:type swrl:AtomList ;
+                                               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                           swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                                                           swrl:argument1 <urn:swrl#item2> ;
+                                                           swrl:argument2 <urn:swrl#j>
+                                                         ] ;
+                                               rdf:rest [ rdf:type swrl:AtomList ;
+                                                          rdf:rest rdf:nil ;
+                                                          rdf:first [ rdf:type swrl:BuiltinAtom ;
+                                                                      swrl:builtin swrlb:add ;
+                                                                      swrl:arguments [ rdf:type rdf:List ;
+                                                                                       rdf:first <urn:swrl#j> ;
+                                                                                       rdf:rest [ rdf:type rdf:List ;
+                                                                                                  rdf:first <urn:swrl#i> ;
+                                                                                                  rdf:rest [ rdf:type rdf:List ;
+                                                                                                             rdf:first 1 ;
+                                                                                                             rdf:rest rdf:nil
+                                                                                                           ]
+                                                                                                ]
+                                                                                     ]
+                                                                    ]
+                                                        ]
+                                             ] ;
+                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                                                swrl:argument2 <urn:swrl#i> ;
+                                                swrl:argument1 <urn:swrl#item1>
+                                              ]
+                                  ]
+                       ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                                     swrl:argument1 <urn:swrl#item> ;
+                                     swrl:argument2 <urn:swrl#n>
+                                   ] ;
+                         rdf:rest [ rdf:type swrl:AtomList ;
+                                    rdf:rest rdf:nil ;
+                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasCardinality> ;
+                                                swrl:argument1 <urn:swrl#collection> ;
+                                                swrl:argument2 <urn:swrl#n>
+                                              ]
+                                  ]
+                       ] ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#item>
+                        ]
+            ] ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasLastItem> ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#item>
+                        ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasFirstItem> ;
+                          swrl:argument1 <urn:swrl#collectionl> ;
+                          swrl:argument2 <urn:swrl#item>
+                        ]
+            ] ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest rdf:nil ;
+                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                     swrl:argument2 "1" ;
+                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                                     swrl:argument1 <urn:swrl#item>
+                                   ]
+                       ] ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#item>
+                        ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                          swrl:argument1 <urn:swrl#last> ;
+                          swrl:argument2 <urn:swrl#n>
+                        ]
+            ] ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:first [ rdf:type swrl:ClassAtom ;
+                          swrl:argument1 <urn:swrl#collecction> ;
+                          swrl:classPredicate [ rdf:type owl:Class ;
+                                                owl:complementOf <http://purl.org/ceu/eco/1.0#UniquenessCollection>
+                                              ]
+                        ] ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasLastItem> ;
+                                     swrl:argument1 <urn:swrl#collection> ;
+                                     swrl:argument2 <urn:swrl#last>
+                                   ] ;
+                         rdf:rest [ rdf:type swrl:AtomList ;
+                                    rdf:rest rdf:nil ;
+                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasCardinality> ;
+                                                swrl:argument1 <urn:swrl#collection> ;
+                                                swrl:argument2 <urn:swrl#n>
+                                              ]
+                                  ]
+                       ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:argument2 "An ordered item cannot be followed by itself" ;
+                          swrl:propertyPredicate :hasError ;
+                          swrl:argument1 <urn:swrl#x>
+                        ]
+            ] ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#followedBy> ;
+                          swrl:argument2 <urn:swrl#x> ;
+                          swrl:argument1 <urn:swrl#x>
+                        ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest rdf:nil ;
+                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#followedBy> ;
+                                     swrl:argument1 <urn:swrl#item1> ;
+                                     swrl:argument2 <urn:swrl#item2>
+                                   ]
+                       ] ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#item1>
+                        ]
+            ] ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#item2>
+                        ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest rdf:nil ;
+                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#followedBy> ;
+                                     swrl:argument2 <urn:swrl#item1> ;
+                                     swrl:argument1 <urn:swrl#item2>
+                                   ]
+                       ] ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#followedBy> ;
+                          swrl:argument1 <urn:swrl#item1> ;
+                          swrl:argument2 <urn:swrl#item2>
+                        ]
+            ] ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:argument2 "An ordered item can not be followed and preceded at the same time by another item" ;
+                          swrl:propertyPredicate :hasError ;
+                          swrl:argument1 <urn:swrl#item1>
+                        ]
+            ]
+] .
 
 ###  Generated by the OWL API (version 3.5.1) http://owlapi.sourceforge.net
 
