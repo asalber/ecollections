@@ -1,0 +1,997 @@
+Prefix: : <http://purl.org/ceu/lco#>
+Prefix: dc: <http://purl.org/dc/elements/1.1/>
+Prefix: eco: <http://purl.org/ceu/eco#>
+Prefix: owl: <http://www.w3.org/2002/07/owl#>
+Prefix: rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+Prefix: xml: <http://www.w3.org/XML/1998/namespace>
+Prefix: xsd: <http://www.w3.org/2001/XMLSchema#>
+Prefix: eco2: <http://purl.org/ceu/eco/1.0#>
+Prefix: rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+Prefix: swrl: <http://www.w3.org/2003/11/swrl#>
+Prefix: swrlb: <http://www.w3.org/2003/11/swrlb#>
+
+
+
+Ontology: <http://purl.org/ceu/eco>
+<http://purl.org/ceu/eco/1.0>
+Import: <http://www.essepuntato.it/2009/10/error>
+
+Annotations: 
+    dc:rights "La ontología E-Collections está bajo una licencia de Creative Commons Reconocimiento-CompartirIgual 4.0 Internacional ( http://creativecommons.org/licenses/by-sa/4.0/)."@es,
+    owl:versionInfo "Versión 1.0 01/02/2015"@de,
+    rdfs:comment "La ontología E-Collections define una clasificación taxonómica de distintos tipos de colecciones de acuerdo a las características de homogeneidad, unicidad, orden y cardinalidad."@es,
+    owl:versionInfo "Version 1.0 2015/02/01"@en,
+    dc:creator "Alfredo Sánchez Alberca (asalber@ceu.es) <http://aprendeconalf.es/foaf.rdf>"@es,
+    rdfs:label "E-Collections Ontology"@en,
+    dc:rights "E-Collections ontology is released under Attribution-ShareAlike 4.0 International Creative Commons license: http://creativecommons.org/licenses/by-sa/4.0/"@en,
+    rdfs:label "Ontología E-Collections"@es,
+    rdfs:comment "The E-Collections ontology defines a collections taxonomy for different collection types based on the structural properties of homogeneity, uniqueness, order and cardinality."@en
+
+AnnotationProperty: dc:rights
+
+    
+AnnotationProperty: owl:versionInfo
+
+    
+AnnotationProperty: rdfs:label
+
+    
+AnnotationProperty: rdfs:comment
+
+    
+AnnotationProperty: dc:creator
+
+    
+Datatype: xsd:nonNegativeInteger
+
+    
+Datatype: xsd:integer
+
+    
+Datatype: xsd:positiveInteger
+
+    
+Datatype: rdf:PlainLiteral
+
+    
+ObjectProperty: eco:hasOrderedItem
+
+    Annotations: 
+        rdfs:comment "Property that relates an ordered collection with an ordered item that is part of it."@en,
+        rdfs:comment "Propiedad que relaciona una colección ordenada con un item ordenado que forma parte de ella."@es,
+        rdfs:label "has ordered item"@en,
+        rdfs:label "tiene item ordenado"@es
+    
+    Domain: 
+        eco:OrderedCollection
+    
+    Range: 
+        eco:OrderedItem
+    
+    SubPropertyOf: 
+        eco:hasItem
+    
+    InverseOf: 
+        eco:isOrderedItemOf
+    
+    
+ObjectProperty: eco:hasElementsOfType
+
+    Annotations: 
+        rdfs:label "has elements of type"@en,
+        rdfs:label "tiene elementos de tipo"@es
+    
+    Domain: 
+        eco:HomogeneousCollection
+    
+    Characteristics: 
+        Functional
+    
+    
+ObjectProperty: owl:topObjectProperty
+
+    
+ObjectProperty: eco:hasPreviousItem
+
+    Annotations: 
+        rdfs:comment "Propiedad que relaciona un item ordenado con otro que le precede inmediatamente en una misma colección ordenada."@es,
+        rdfs:label "has previous item"@en,
+        rdfs:comment "Property that relates an ordered item with another that precedes it immediately in the same ordered collection."@en,
+        rdfs:label "tiene previo item"@es
+    
+    Characteristics: 
+        Functional,
+        InverseFunctional
+    
+    SubPropertyOf: 
+        eco:precededByItem
+    
+    InverseOf: 
+        eco:hasNextItem
+    
+    
+ObjectProperty: eco:isOrderedItemOf
+
+    Annotations: 
+        rdfs:comment "Property that relates an ordered item with the ordered collection that belongs to."@en,
+        rdfs:comment "Propiedad que relaciona un item ordenado con la colección ordenada a la que pertenece."@es,
+        rdfs:label "es item ordenado de"@es,
+        rdfs:label "is ordered item of"@en
+    
+    SubPropertyOf: 
+        eco:isItemOf
+    
+    InverseOf: 
+        eco:hasOrderedItem
+    
+    
+ObjectProperty: eco:isFirstItemOf
+
+    Annotations: 
+        rdfs:label "is first item of"@en,
+        rdfs:label "es primer item de"@es,
+        rdfs:comment "Propiedad que relaciona un item ordenado con una colección ordenada en la que el item ocupa la primera posición."@es,
+        rdfs:comment "Property that relates an ordered item with an ordered collection in which the item occupies the first position."@en
+    
+    SubPropertyOf: 
+        eco:isOrderedItemOf
+    
+    InverseOf: 
+        eco:hasFirstItem
+    
+    
+ObjectProperty: eco:hasElement
+
+    Annotations: 
+        rdfs:comment "Property that relates a collection with an element that belongs to it."@en,
+        rdfs:comment "Propiedad que relaciona una colección con un elemento que pertenece a ella."@es,
+        rdfs:label "has element"@en,
+        rdfs:label "tiene elemento"@es
+    
+    Domain: 
+        eco:Collection
+    
+    Range: 
+        not (eco:Item)
+    
+    InverseOf: 
+        eco:isElementOf
+    
+    SubPropertyChain: 
+        eco:hasItem o eco:hasContent
+    
+    
+ObjectProperty: eco:isElementOf
+
+    Annotations: 
+        rdfs:comment "Property that relates an element or object with a collection that belongs to."@en,
+        rdfs:label "es elemento de"@es,
+        rdfs:label "is element of"@en,
+        rdfs:comment "Propiedad que relaciona un elemento u objeto con una colección a la que pertenece."@es
+    
+    Range: 
+        eco:Collection
+    
+    InverseOf: 
+        eco:hasElement
+    
+    
+ObjectProperty: eco:hasLastItem
+
+    Annotations: 
+        rdfs:comment "Propiedad que relaciona una colección ordenada con su último item."@es,
+        rdfs:comment "Property that relates an ordered collection with its last item."@en,
+        rdfs:label "has last item"@en,
+        rdfs:label "tiene último item"@es
+    
+    Range: 
+        eco:OrderedItem
+         and (eco:hasNextItem exactly 0 owl:Thing)
+    
+    Characteristics: 
+        Functional
+    
+    SubPropertyOf: 
+        eco:hasOrderedItem
+    
+    InverseOf: 
+        eco:isLastItemOf
+    
+    
+ObjectProperty: eco:isItemOf
+
+    Annotations: 
+        rdfs:label "is item of"@en,
+        rdfs:comment "Propiedad que relaciona un item con la colección de la que forma parte."@es,
+        rdfs:comment "Property that relates an item with the collection that is part of."@en,
+        rdfs:label "es item de"@es
+    
+    InverseOf: 
+        eco:hasItem
+    
+    
+ObjectProperty: eco:hasFirstItem
+
+    Annotations: 
+        rdfs:comment "Property that relates an ordered collection with its first item."@en,
+        rdfs:label "tiene primer item"@es,
+        rdfs:label "has first item"@en,
+        rdfs:comment "Propiedad que relaciona una colección ordenada con su primer item."@es
+    
+    Range: 
+        eco:OrderedItem
+         and (eco:hasPreviousItem exactly 0 owl:Thing)
+         and (eco:hasIndex value "1"^^xsd:positiveInteger)
+    
+    Characteristics: 
+        Functional
+    
+    SubPropertyOf: 
+        eco:hasOrderedItem
+    
+    InverseOf: 
+        eco:isFirstItemOf
+    
+    
+ObjectProperty: eco:isLastItemOf
+
+    Annotations: 
+        rdfs:label "es último item de"@es,
+        rdfs:label "is last item of"@en,
+        rdfs:comment "Propiedad que relaciona un item ordenado con una colección ordenada en la que el item ocupa la última posición."@es,
+        rdfs:comment "Property that relates an ordered item with an ordered collection in which the item occupies the last position."@en
+    
+    SubPropertyOf: 
+        eco:isOrderedItemOf
+    
+    InverseOf: 
+        eco:hasLastItem
+    
+    
+ObjectProperty: eco:hasItem
+
+    Annotations: 
+        rdfs:comment "Propiedad que relaciona una colección con un item que forma parte de ella."@es,
+        rdfs:comment "Property that relates a collection with an item that is part of it."@en,
+        rdfs:label "tiene item"@es,
+        rdfs:label "has item"@en
+    
+    Domain: 
+        eco:Collection
+    
+    Range: 
+        eco:Item
+    
+    Characteristics: 
+        InverseFunctional
+    
+    InverseOf: 
+        eco:isItemOf
+    
+    
+ObjectProperty: eco:hasNextItem
+
+    Annotations: 
+        rdfs:label "tiene siguiente item"@es,
+        rdfs:label "has next item"@en,
+        rdfs:comment "Property that relates an ordered item with other that follows it immediately in the same ordered collection."@en,
+        rdfs:comment "Propiedad que relaciona un item ordenado con otro que le sigue inmediatamente en un misma colección ordenada."@es
+    
+    Characteristics: 
+        Functional,
+        InverseFunctional
+    
+    SubPropertyOf: 
+        eco:followedByItem
+    
+    InverseOf: 
+        eco:hasPreviousItem
+    
+    
+ObjectProperty: eco:hasContent
+
+    Annotations: 
+        rdfs:label "has content"@en,
+        rdfs:label "contiene"@es,
+        rdfs:comment "Propiedad que relaciona un Item con el elemento u objecto que contiene."@es,
+        rdfs:comment "Property that relates an item with the element or object that contains."@en
+    
+    Domain: 
+        eco:Item
+    
+    Range: 
+        not (eco:Item)
+    
+    Characteristics: 
+        Functional
+    
+    SubPropertyOf: 
+        owl:topObjectProperty
+    
+    
+ObjectProperty: eco:precededByItem
+
+    Annotations: 
+        rdfs:comment "Property that relates an ordered item with another that precedes it in the same ordered collection."@en,
+        rdfs:label "preceded by item"@en,
+        rdfs:label "precedido por item"@es,
+        rdfs:comment "Propiedad que relaciona un item ordenado con otro que le precede en una misma colección ordenada."@es
+    
+    Domain: 
+        eco:OrderedItem
+    
+    Range: 
+        eco:OrderedItem
+    
+    Characteristics: 
+        Transitive
+    
+    InverseOf: 
+        eco:followedByItem
+    
+    
+ObjectProperty: eco:followedByItem
+
+    Annotations: 
+        rdfs:comment "Propiedad que relaciona un item ordenado con otro que le sigue después en una misma colección ordenada."@es,
+        rdfs:label "seguido por item"@es,
+        rdfs:comment "Property that relates an ordered item with another that follows it after in the same ordered collection."@en,
+        rdfs:label "followed by item"@en
+    
+    Domain: 
+        eco:OrderedItem
+    
+    Range: 
+        eco:OrderedItem
+    
+    Characteristics: 
+        Transitive
+    
+    InverseOf: 
+        eco:precededByItem
+    
+    
+DataProperty: eco:hasIndex
+
+    Annotations: 
+        rdfs:label "has index"@en,
+        rdfs:comment "Property that relates an ordered item with its position in an ordered collection."@en,
+        rdfs:label "tiene índice"@es,
+        rdfs:comment "Propiedad que relaciona un item ordenado con su posición en una colección ordenada."@es
+    
+    Domain: 
+        eco:OrderedItem
+    
+    Range: 
+        xsd:positiveInteger
+    
+    Characteristics: 
+        Functional
+    
+    
+DataProperty: eco:hasCardinality
+
+    Annotations: 
+        rdfs:comment "Property that relates a collection with the number of elements or objects that contains."@en,
+        rdfs:comment "Propiedad que relaciona una colección con el número de elementos que contiene."@es,
+        rdfs:label "tiene cardinalidad"@es,
+        rdfs:label "has cardinality"@en
+    
+    Domain: 
+        eco:Collection
+    
+    Range: 
+        xsd:nonNegativeInteger
+    
+    Characteristics: 
+        Functional
+    
+    
+DataProperty: <http://www.essepuntato.it/2009/10/error/hasError>
+
+    
+Class: eco:Heteroset
+
+    Annotations: 
+        rdfs:comment "Un heteroconjunto es una colección heterogénea, con unicidad, no ordenada y de cardinalidad variable."@es,
+        rdfs:label "Heteroset"@en,
+        rdfs:comment "A heteroset is an heterogeneous, with uniqueness, non ordered and with variable cardinality collection."@en,
+        rdfs:label "Heteroconjunto"@es
+    
+    SubClassOf: 
+        eco:Multiheteroset,
+        eco:UniquenessCollection
+    
+    
+Class: eco:List
+
+    Annotations: 
+        rdfs:comment "Una lista es una colección heterogénea, sin unicidad, ordenada y de cardinalidad variable."@es,
+        rdfs:label "Lista"@es,
+        rdfs:comment "A list is an heterogeneous, without uniqueness, ordered and with variable cardinality collection."@en,
+        rdfs:label "List"@en
+    
+    SubClassOf: 
+        eco:Multiheteroset,
+        eco:OrderedCollection
+    
+    
+Class: eco:Element
+
+    Annotations: 
+        rdfs:comment "Elemento u objeto perteneciente a una colección."@es,
+        rdfs:label "Element"@en,
+        rdfs:comment "Element or object beloging to a collection."@en,
+        rdfs:label "Elemento"@es
+    
+    
+Class: eco:FixedCardinalityCollection
+
+    Annotations: 
+        rdfs:comment "A fixed cardiality collection is a collection of a fixed number of elements."@en,
+        rdfs:label "Fixed cardinality collection"@en,
+        rdfs:label "Colección de cardinalidad fija"@es,
+        rdfs:comment "Una colección de cardinalidad fija es una colección con un número fijo de elementos."@es
+    
+    SubClassOf: 
+        eco:Collection
+    
+    
+Class: eco:Multicombination
+
+    Annotations: 
+        rdfs:label "Multicombination"@en,
+        rdfs:comment "Una multicombinación es una colección homogénea, sin unicidad, no ordenada y de cardinalidad fija."@es,
+        rdfs:comment "A multicombination is an homogeneous, without uniqueness, non ordered and with fixed cardinality collection."@en,
+        rdfs:label "Multicombinación"@es
+    
+    SubClassOf: 
+        eco:Box,
+        eco:Multiset
+    
+    
+Class: eco:OrderedItem
+
+    Annotations: 
+        rdfs:comment "Un item ordenado es un item que forma parte de una secuencia ordenada de items."@es,
+        rdfs:label "Item ordenado"@es,
+        rdfs:comment "An ordered item is an item that is part of an ordered sequence of items."@en,
+        rdfs:label "Ordered item"@en
+    
+    EquivalentTo: 
+        eco:Item
+         and (eco:hasNextItem max 1 owl:Thing)
+         and (eco:hasPreviousItem max 1 owl:Thing)
+         and (eco:hasIndex exactly 1 xsd:positiveInteger)
+    
+    
+Class: eco:UniquenessCollection
+
+    Annotations: 
+        rdfs:comment "Una colección con unicidad es una colección donde cada elemento aparece a lo sumo una vez, es decir, donde no se permiten las repeticiones de elementos."@es,
+        rdfs:label "Colección con unicidad"@es,
+        rdfs:comment "An uniqueness collection is a collection where each element appears at most one time, that is, element repetitions are not allowed."@en,
+        rdfs:label "Uniqueness collection"@en
+    
+    SubClassOf: 
+        eco:Collection
+    
+    
+Class: eco:Heteroranking
+
+    Annotations: 
+        rdfs:comment "Un heteroranking es una colección heterogénea, con unicidad, ordenada y de cardinalidad variable."@es,
+        rdfs:comment "An heteroranking is an heterogeneous, with uniqueness, ordered and with variable cardinality collection."@en,
+        rdfs:label "Heteroranking"@es,
+        rdfs:label "Heteroranking"@en
+    
+    SubClassOf: 
+        eco:Heteroset,
+        eco:List
+    
+    
+Class: owl:Thing
+
+    
+Class: eco:Combination
+
+    Annotations: 
+        rdfs:comment "Una combinación es una colección homogénea, con unicidad, no ordenada y de cardinalidad fija."@es,
+        rdfs:label "Combinación"@es,
+        rdfs:comment "A combination is an homogeneous, with uniqueness, non ordered and with fixed cardinality collection."@en,
+        rdfs:label "Combination"@en
+    
+    SubClassOf: 
+        eco:Set,
+        eco:Multicombination,
+        eco:Heterocombination
+    
+    
+Class: eco:Vector
+
+    Annotations: 
+        rdfs:label "Vector"@en,
+        rdfs:comment "Un vector es una colección homogénea, sin unicidad, ordenada y de cardinalidad fija."@es,
+        rdfs:label "Vector"@es,
+        rdfs:comment "A vector is an homogeneous, without uniqueness, ordered and with fixed cardinality collection."@en
+    
+    SubClassOf: 
+        eco:Multicombination,
+        eco:Sequence,
+        eco:Tuple
+    
+    
+Class: eco:HomogeneousCollection
+
+    Annotations: 
+        rdfs:comment "Una coleccion homogénea es una colección donde todos los elementos son del mismo tipo."@es,
+        rdfs:label "Colección homogénea"@es,
+        rdfs:comment "An homogeneous collection is a collection with all its element of the same type."@en,
+        rdfs:label "Homogeneous collection"@en
+    
+    EquivalentTo: 
+        eco:Collection
+         and (eco:hasElementsOfType exactly 1 owl:Thing)
+    
+    
+Class: eco:Variation
+
+    Annotations: 
+        rdfs:label "Variación"@es,
+        rdfs:comment "Una variación es una colección homogénea, con unicidad, ordenada y de cardinalidad fija."@es,
+        rdfs:label "Variation"@en,
+        rdfs:comment "A variation is an homogeneous, with uniqueness, ordered and with fixed cardinality collection."@en
+    
+    SubClassOf: 
+        eco:Heterovariation,
+        eco:Ranking,
+        eco:Combination,
+        eco:Vector
+    
+    
+Class: <http://purl.org/ceu/eco#3CardinalityCollection>
+
+    EquivalentTo: 
+        eco:FixedCardinalityCollection
+         and (eco:hasItem exactly 3 eco:Item)
+    
+    
+Class: <http://purl.org/ceu/eco#2CardinalityCollection>
+
+    EquivalentTo: 
+        eco:FixedCardinalityCollection
+         and (eco:hasItem exactly 2 eco:Item)
+    
+    
+Class: <http://purl.org/ceu/eco#1CardinalityCollection>
+
+    EquivalentTo: 
+        eco:FixedCardinalityCollection
+         and (eco:hasItem exactly 1 eco:Item)
+    
+    
+Class: eco:Collection
+
+    Annotations: 
+        rdfs:comment "A collection is a group of objects or elements."@en,
+        rdfs:label "Collection"@en,
+        rdfs:label "Colección"@es,
+        rdfs:comment "Una colección es una agrupación de objetos o elementos."@es
+    
+    DisjointWith: 
+        eco:Item
+    
+    
+Class: eco:Heterocombination
+
+    Annotations: 
+        rdfs:comment "Una heterocombinación es una colección heterogénea, con unicidad, no ordenada y de cardinalidad fija."@es,
+        rdfs:label "Heterocombination"@en,
+        rdfs:label "Heterocombinación"@es,
+        rdfs:comment "An heterocombination is an heterogeneous, with uniqueness, non ordered and with fixed cardinality collection."@en
+    
+    SubClassOf: 
+        eco:Heteroset,
+        eco:Box
+    
+    
+Class: eco:Multiheteroset
+
+    Annotations: 
+        rdfs:comment "Un multiheteroconjunto es una colección heterogénea, sin unicidad, no ordenada y de cardilnalidad variable."@es,
+        rdfs:label "Multiheteroconjunto"@es,
+        rdfs:comment "A multiheteroset is an heterogeneous, without uniqueness, non ordered and with variable cardinality collection."@en,
+        rdfs:label "Multiheteroset"@en
+    
+    SubClassOf: 
+        eco:Collection
+    
+    
+Class: eco:Tuple
+
+    Annotations: 
+        rdfs:comment "A tuple is an heterogeneous, without uniqueness, ordered and with fixed cardinality collection."@en,
+        rdfs:comment "Una tupla es una colección heterogénea, sin unicidad, ordenada y de cardinalidad fija."@es,
+        rdfs:label "Tuple"@en,
+        rdfs:label "Tupla"@es
+    
+    SubClassOf: 
+        eco:Box,
+        eco:List
+    
+    
+Class: eco:Multiset
+
+    Annotations: 
+        rdfs:comment "Un multiconjunto es una colección homogenea, sin unicidad, no ordenada y de cardinalidad variable."@es,
+        rdfs:label "Multiconjunto"@es,
+        rdfs:comment "A multiset is an homogeneous, without uniqueness, non ordered and with variable cardinality collection."@en,
+        rdfs:label "Multiset"@en
+    
+    SubClassOf: 
+        eco:Multiheteroset,
+        eco:HomogeneousCollection
+    
+    
+Class: eco:Ranking
+
+    Annotations: 
+        rdfs:label "Ranking"@en,
+        rdfs:comment "Un ranking es una colección homogénea, con unicidad, ordenada y de cardinalidad variable."@es,
+        rdfs:label "Ranking"@es,
+        rdfs:comment "A ranking is an homogeneous, with uniqueness, ordered and with variable cardinality collection."@en
+    
+    SubClassOf: 
+        eco:Set,
+        eco:Heteroranking,
+        eco:Sequence
+    
+    
+Class: eco:Item
+
+    Annotations: 
+        rdfs:comment "Un item es un contenedor para los elementos de las colecciones. Es un rodeo para permitir la duplicidad de elementos en la colecciones."@es,
+        rdfs:label "Item"@es,
+        rdfs:comment "An item is a container for elements of collections. It's a workaround to allow duplicate elements in a collections."@en,
+        rdfs:label "Item"@en
+    
+    DisjointWith: 
+        eco:Collection
+    
+    
+Class: eco:Heterovariation
+
+    Annotations: 
+        rdfs:comment "An heterovariation is an heterogeneous, with uniqueness, ordered and with fixed cardinality collection."@en,
+        rdfs:comment "Una heterovariación es una colección heterogénea, con unicidad, ordenada y de cardinalidad fija."@es,
+        rdfs:label "Heterovariación"@es,
+        rdfs:label "Heterovariation"@en
+    
+    SubClassOf: 
+        eco:Tuple,
+        eco:Heterocombination,
+        eco:Heteroranking
+    
+    
+Class: eco:Sequence
+
+    Annotations: 
+        rdfs:label "Secuencia"@es,
+        rdfs:comment "Una secuencia es una colección homogenea, sin unicidad, ordenada y de cardinalidad variable."@es,
+        rdfs:comment "A sequence is an homogeneous, without uniqueness, ordered and with variable cardinality collection."@en,
+        rdfs:label "Sequence"@en
+    
+    SubClassOf: 
+        eco:List,
+        eco:Multiset
+    
+    
+Class: eco:Set
+
+    Annotations: 
+        rdfs:comment "Un conjunto es una colección homogénea, con unicidad, no ordenada y de cardinalidad fija."@es,
+        rdfs:label "Set"@en,
+        rdfs:label "Conjunto"@es,
+        rdfs:comment "A set is an homogeneous, with uniqueness, non ordered and with variable cardinality collection."@en
+    
+    SubClassOf: 
+        eco:Heteroset,
+        eco:Multiset
+    
+    
+Class: eco:OrderedCollection
+
+    Annotations: 
+        rdfs:label "Ordered collection"@en,
+        rdfs:label "Colección ordenada"@es,
+        rdfs:comment "An ordered collection is a collection where elements follow a sequential order."@en,
+        rdfs:comment "Una colección ordenada es una colección donde los elementos siguen un orden secuencial."@es
+    
+    EquivalentTo: 
+        eco:Collection
+         and (eco:hasItem only eco:OrderedItem)
+         and (eco:hasFirstItem max 1 owl:Thing)
+         and (eco:hasLastItem max 1 owl:Thing)
+    
+    
+Class: eco:Box
+
+    Annotations: 
+        rdfs:comment "A box is an heterogeneous, without uniqueness, non ordered and with fixed cardinality collection."@en,
+        rdfs:comment "Una caja es una colección heterogénea, sin unicidad, no ordenada y de cardinalidad fija."@es,
+        rdfs:label "Caja"@es,
+        rdfs:label "Box"@en
+    
+    SubClassOf: 
+        eco:FixedCardinalityCollection,
+        eco:Multiheteroset
+    
+    
+Individual: eco:Sequence
+
+    Annotations: 
+        rdfs:label "Secuencia"@es,
+        rdfs:comment "Una secuencia es una colección homogenea, sin unicidad, ordenada y de cardinalidad variable."@es,
+        rdfs:comment "A sequence is an homogeneous, without uniqueness, ordered and with variable cardinality collection."@en,
+        rdfs:label "Sequence"@en
+    
+    Types: 
+        eco:Sequence
+    
+    
+Individual: eco:Vector
+
+    Annotations: 
+        rdfs:label "Vector"@en,
+        rdfs:comment "Un vector es una colección homogénea, sin unicidad, ordenada y de cardinalidad fija."@es,
+        rdfs:label "Vector"@es,
+        rdfs:comment "A vector is an homogeneous, without uniqueness, ordered and with fixed cardinality collection."@en
+    
+    Types: 
+        eco:Vector
+    
+    
+Individual: eco:elemento1
+
+    Types: 
+        eco:Element
+    
+    
+Individual: eco:Combination
+
+    Annotations: 
+        rdfs:comment "Una combinación es una colección homogénea, con unicidad, no ordenada y de cardinalidad fija."@es,
+        rdfs:label "Combinación"@es,
+        rdfs:comment "A combination is an homogeneous, with uniqueness, non ordered and with fixed cardinality collection."@en,
+        rdfs:label "Combination"@en
+    
+    Types: 
+        eco:Combination
+    
+    
+Individual: eco:Heteroset
+
+    Annotations: 
+        rdfs:comment "Un heteroconjunto es una colección heterogénea, con unicidad, no ordenada y de cardinalidad variable."@es,
+        rdfs:label "Heteroset"@en,
+        rdfs:comment "A heteroset is an heterogeneous, with uniqueness, non ordered and with variable cardinality collection."@en,
+        rdfs:label "Heteroconjunto"@es
+    
+    Types: 
+        eco:Heteroset
+    
+    
+Individual: eco:Variation
+
+    Annotations: 
+        rdfs:label "Variación"@es,
+        rdfs:comment "Una variación es una colección homogénea, con unicidad, ordenada y de cardinalidad fija."@es,
+        rdfs:label "Variation"@en,
+        rdfs:comment "A variation is an homogeneous, with uniqueness, ordered and with fixed cardinality collection."@en
+    
+    Types: 
+        eco:Variation
+    
+    
+Individual: eco:col2
+
+    Types: 
+        eco:HomogeneousCollection,
+        eco:hasElement only eco:Element
+    
+    Facts:  
+     eco:hasElementsOfType  eco:elemento1
+    
+    
+Individual: eco:col1
+
+    Types: 
+        eco:FixedCardinalityCollection
+    
+    
+Individual: eco:List
+
+    Annotations: 
+        rdfs:comment "Una lista es una colección heterogénea, sin unicidad, ordenada y de cardinalidad variable."@es,
+        rdfs:label "Lista"@es,
+        rdfs:comment "A list is an heterogeneous, without uniqueness, ordered and with variable cardinality collection."@en,
+        rdfs:label "List"@en
+    
+    Types: 
+        eco:List
+    
+    
+Individual: eco:Collection
+
+    Annotations: 
+        rdfs:comment "A collection is a group of objects or elements."@en,
+        rdfs:label "Collection"@en,
+        rdfs:label "Colección"@es,
+        rdfs:comment "Una colección es una agrupación de objetos o elementos."@es
+    
+    Types: 
+        eco:Collection
+    
+    
+Individual: eco:Multiheteroset
+
+    Annotations: 
+        rdfs:comment "Un multiheteroconjunto es una colección heterogénea, sin unicidad, no ordenada y de cardilnalidad variable."@es,
+        rdfs:label "Multiheteroconjunto"@es,
+        rdfs:comment "A multiheteroset is an heterogeneous, without uniqueness, non ordered and with variable cardinality collection."@en,
+        rdfs:label "Multiheteroset"@en
+    
+    Types: 
+        eco:Multiheteroset
+    
+    
+Individual: eco:Box
+
+    Annotations: 
+        rdfs:comment "A box is an heterogeneous, without uniqueness, non ordered and with fixed cardinality collection."@en,
+        rdfs:comment "Una caja es una colección heterogénea, sin unicidad, no ordenada y de cardinalidad fija."@es,
+        rdfs:label "Caja"@es,
+        rdfs:label "Box"@en
+    
+    Types: 
+        eco:Box
+    
+    
+Individual: eco:Heteroranking
+
+    Annotations: 
+        rdfs:comment "Un heteroranking es una colección heterogénea, con unicidad, ordenada y de cardinalidad variable."@es,
+        rdfs:comment "An heteroranking is an heterogeneous, with uniqueness, ordered and with variable cardinality collection."@en,
+        rdfs:label "Heteroranking"@es,
+        rdfs:label "Heteroranking"@en
+    
+    Types: 
+        eco:Heteroranking
+    
+    
+Individual: eco:Ranking
+
+    Annotations: 
+        rdfs:label "Ranking"@en,
+        rdfs:comment "Un ranking es una colección homogénea, con unicidad, ordenada y de cardinalidad variable."@es,
+        rdfs:label "Ranking"@es,
+        rdfs:comment "A ranking is an homogeneous, with uniqueness, ordered and with variable cardinality collection."@en
+    
+    Types: 
+        eco:Ranking
+    
+    
+Individual: eco:Multicombination
+
+    Annotations: 
+        rdfs:label "Multicombination"@en,
+        rdfs:comment "Una multicombinación es una colección homogénea, sin unicidad, no ordenada y de cardinalidad fija."@es,
+        rdfs:comment "A multicombination is an homogeneous, without uniqueness, non ordered and with fixed cardinality collection."@en,
+        rdfs:label "Multicombinación"@es
+    
+    Types: 
+        eco:Multicombination
+    
+    
+Individual: eco:Set
+
+    Annotations: 
+        rdfs:comment "Un conjunto es una colección homogénea, con unicidad, no ordenada y de cardinalidad fija."@es,
+        rdfs:label "Set"@en,
+        rdfs:label "Conjunto"@es,
+        rdfs:comment "A set is an homogeneous, with uniqueness, non ordered and with variable cardinality collection."@en
+    
+    Types: 
+        eco:Set
+    
+    
+Individual: eco:Multiset
+
+    Annotations: 
+        rdfs:comment "Un multiconjunto es una colección homogenea, sin unicidad, no ordenada y de cardinalidad variable."@es,
+        rdfs:label "Multiconjunto"@es,
+        rdfs:comment "A multiset is an homogeneous, without uniqueness, non ordered and with variable cardinality collection."@en,
+        rdfs:label "Multiset"@en
+    
+    Types: 
+        eco:Multiset
+    
+    
+Individual: eco:Heterovariation
+
+    Annotations: 
+        rdfs:comment "An heterovariation is an heterogeneous, with uniqueness, ordered and with fixed cardinality collection."@en,
+        rdfs:comment "Una heterovariación es una colección heterogénea, con unicidad, ordenada y de cardinalidad fija."@es,
+        rdfs:label "Heterovariación"@es,
+        rdfs:label "Heterovariation"@en
+    
+    Types: 
+        eco:Heterovariation
+    
+    
+Individual: eco:Tuple
+
+    Annotations: 
+        rdfs:comment "A tuple is an heterogeneous, without uniqueness, ordered and with fixed cardinality collection."@en,
+        rdfs:comment "Una tupla es una colección heterogénea, sin unicidad, ordenada y de cardinalidad fija."@es,
+        rdfs:label "Tuple"@en,
+        rdfs:label "Tupla"@es
+    
+    Types: 
+        eco:Tuple
+    
+    
+Individual: eco:Heterocombination
+
+    Annotations: 
+        rdfs:comment "Una heterocombinación es una colección heterogénea, con unicidad, no ordenada y de cardinalidad fija."@es,
+        rdfs:label "Heterocombination"@en,
+        rdfs:label "Heterocombinación"@es,
+        rdfs:comment "An heterocombination is an heterogeneous, with uniqueness, non ordered and with fixed cardinality collection."@en
+    
+    Types: 
+        eco:Heterocombination
+    
+    
+Rule: 
+    eco:hasOrderedItem(?collection, ?item), eco:hasIndex(?item, ?n), eco:hasCardinality(?collection, ?n) -> eco:hasLastItem(?collection, ?item)
+
+Rule: 
+    eco:hasIndex(?last, ?n), (not (eco:UniquenessCollection))(?collecction), eco:hasLastItem(?collection, ?last) -> eco:hasCardinality(?collection, ?n)
+
+Rule: 
+    eco:followedByItem(?item1, ?item2), eco:followedByItem(?item2, ?item1) -> <http://www.essepuntato.it/2009/10/error/hasError>(?item1, "An ordered item can not be followed and preceded at the same time by another item")
+
+Rule: 
+    eco:hasCardinality(?collection, 3), eco:FixedCardinalityCollection(?collection) -> (eco:hasItem exactly 3 eco:Item)(?collection)
+
+Rule: 
+    eco:followedByItem(?x, ?x) -> <http://www.essepuntato.it/2009/10/error/hasError>(?x, "An ordered item cannot be followed by itself")
+
+Rule: 
+    (not (eco:UniquenessCollection))(?collecction), eco:hasLastItem(?collection, ?last), eco:hasCardinality(?collection, ?n) -> eco:hasIndex(?last, ?n)
+
+Rule: 
+    eco:followedByItem(?item1, ?item2), eco:hasOrderedItem(?collection, ?item1) -> eco:hasOrderedItem(?collection, ?item2)
+
+Rule: 
+    eco:FixedCardinalityCollection(?collection), eco:hasCardinality(?collection, 2) -> (eco:hasItem exactly 2 eco:Item)(?collection)
+
+Rule: 
+    eco:hasIndex(?item, "1"), eco:hasOrderedItem(?collection, ?item) -> eco:hasFirstItem(?collectionl, ?item)
+
+Rule: 
+    eco:hasOrderedItem(?collection, ?item2), eco:hasIndex(?item2, ?j), eco:hasIndex(?item1, ?i), eco:hasOrderedItem(?collection, ?item1), swrlb:add(?j, ?i, 1) -> eco:hasNextItem(?item1, ?item2)
+
+Rule: 
+    eco:hasIndex(?item, ?index), eco:hasNextItem(?item, ?nextitem), swrlb:add(?nextindex, ?index, 1) -> eco:hasIndex(?nextitem, ?nextindex)
+
+Rule: 
+    eco:hasNextItem(?current, ?next), eco:hasIndex(?current, ?index), swrlb:add(?nextindex, ?index, 1) -> eco:hasIndex(?next, ?nextindex)
+
+Rule: 
+    eco:FixedCardinalityCollection(?collection), eco:hasCardinality(?collection, 1) -> (eco:hasItem exactly 1 eco:Item)(?collection)
+
+Rule: 
+    eco:UniquenessCollection(?collection), eco:hasContent(?item1, ?element1), eco:hasContent(?item2, ?element2),  DifferentFrom (?item1, ?item2), eco:hasItem(?collection, ?item1), eco:hasItem(?collection, ?item2),  SameAs (?element1, ?element2) -> <http://www.essepuntato.it/2009/10/error/hasError>(?collection, "A colllection with uniqueness has repeated elements")
+

@@ -1,9 +1,11 @@
 @prefix : <http://purl.org/ceu/lco#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix eco: <http://purl.org/ceu/eco#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix xml: <http://www.w3.org/XML/1998/namespace> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix eco2: <http://purl.org/ceu/eco/1.0#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix swrl: <http://www.w3.org/2003/11/swrl#> .
 @prefix swrlb: <http://www.w3.org/2003/11/swrlb#> .
@@ -14,9 +16,13 @@
                           rdfs:label "E-Collections Ontology"@en ,
                                      "Ontología E-Collections"@es ;
                           
+                          owl:versionInfo "Versión 1.0 01/02/2015"@de ;
+                          
                           dc:rights "E-Collections ontology is released under Attribution-ShareAlike 4.0 International Creative Commons license: http://creativecommons.org/licenses/by-sa/4.0/"@en ;
                           
                           rdfs:comment "The E-Collections ontology defines a collections taxonomy for different collection types based on the structural properties of homogeneity, uniqueness, order and cardinality."@en ;
+                          
+                          owl:versionInfo "Version 1.0 2015/02/01"@en ;
                           
                           dc:creator "Alfredo Sánchez Alberca (asalber@ceu.es) <http://aprendeconalf.es/foaf.rdf>"@es ;
                           
@@ -24,7 +30,75 @@
                           
                           dc:rights "La ontología E-Collections está bajo una licencia de Creative Commons Reconocimiento-CompartirIgual 4.0 Internacional ( http://creativecommons.org/licenses/by-sa/4.0/)."@es ;
                           
-                          owl:versionIRI <http://purl.org/ceu/eco/1.0> .
+                          owl:versionIRI <http://purl.org/ceu/eco/1.0> ;
+                          
+                          owl:imports <http://www.essepuntato.it/2009/10/error> .
+
+
+#################################################################
+#
+#    Annotation properties
+#
+#################################################################
+
+
+###  http://purl.org/dc/elements/1.1/creator
+
+dc:creator rdf:type owl:AnnotationProperty .
+
+
+
+###  http://purl.org/dc/elements/1.1/rights
+
+dc:rights rdf:type owl:AnnotationProperty .
+
+
+
+###  http://www.w3.org/2000/01/rdf-schema#comment
+
+rdfs:comment rdf:type owl:AnnotationProperty .
+
+
+
+###  http://www.w3.org/2000/01/rdf-schema#label
+
+rdfs:label rdf:type owl:AnnotationProperty .
+
+
+
+
+
+#################################################################
+#
+#    Datatypes
+#
+#################################################################
+
+
+###  http://www.w3.org/1999/02/22-rdf-syntax-ns#PlainLiteral
+
+rdf:PlainLiteral rdf:type rdfs:Datatype .
+
+
+
+###  http://www.w3.org/2001/XMLSchema#integer
+
+xsd:integer rdf:type rdfs:Datatype .
+
+
+
+###  http://www.w3.org/2001/XMLSchema#nonNegativeInteger
+
+xsd:nonNegativeInteger rdf:type rdfs:Datatype .
+
+
+
+###  http://www.w3.org/2001/XMLSchema#positiveInteger
+
+xsd:positiveInteger rdf:type rdfs:Datatype .
+
+
+
 
 
 #################################################################
@@ -34,277 +108,299 @@
 #################################################################
 
 
+###  http://purl.org/ceu/eco#followedByItem
+
+eco:followedByItem rdf:type owl:ObjectProperty ,
+                            owl:TransitiveProperty ;
+                   
+                   rdfs:label "followed by item"@en ,
+                              "seguido por item"@es ;
+                   
+                   rdfs:comment "Property that relates an ordered item with another that follows it after in the same ordered collection."@en ,
+                                "Propiedad que relaciona un item ordenado con otro que le sigue después en una misma colección ordenada."@es ;
+                   
+                   rdfs:domain eco:OrderedItem ;
+                   
+                   rdfs:range eco:OrderedItem ;
+                   
+                   owl:inverseOf eco:precededByItem .
+
+
+
+###  http://purl.org/ceu/eco#hasContent
+
+eco:hasContent rdf:type owl:FunctionalProperty ,
+                        owl:ObjectProperty ;
+               
+               rdfs:label "has content"@en ,
+                          "contiene"@es ;
+               
+               rdfs:comment "Property that relates an item with the element or object that contains."@en ,
+                            "Propiedad que relaciona un Item con el elemento u objecto que contiene."@es ;
+               
+               rdfs:domain eco:Item ;
+               
+               rdfs:subPropertyOf owl:topObjectProperty ;
+               
+               rdfs:range [ rdf:type owl:Class ;
+                            owl:complementOf eco:Item
+                          ] .
+
+
+
+###  http://purl.org/ceu/eco#hasElement
+
+eco:hasElement rdf:type owl:ObjectProperty ;
+               
+               rdfs:label "has element"@en ,
+                          "tiene elemento"@es ;
+               
+               rdfs:comment "Property that relates a collection with an element that belongs to it."@en ,
+                            "Propiedad que relaciona una colección con un elemento que pertenece a ella."@es ;
+               
+               rdfs:domain eco:Collection ;
+               
+               owl:inverseOf eco:isElementOf ;
+               
+               owl:propertyChainAxiom ( eco:hasItem
+                                        eco:hasContent
+                                      ) ;
+               
+               rdfs:range [ rdf:type owl:Class ;
+                            owl:complementOf eco:Item
+                          ] .
+
+
+
+###  http://purl.org/ceu/eco#hasElementsOfType
+
+eco:hasElementsOfType rdf:type owl:FunctionalProperty ,
+                               owl:ObjectProperty ;
+                      
+                      rdfs:label "has elements of type"@en ,
+                                 "tiene elementos de tipo"@es ;
+                      
+                      rdfs:domain eco:HomogeneousCollection .
+
+
+
+###  http://purl.org/ceu/eco#hasFirstItem
+
+eco:hasFirstItem rdf:type owl:FunctionalProperty ,
+                          owl:ObjectProperty ;
+                 
+                 rdfs:label "has first item"@en ,
+                            "tiene primer item"@es ;
+                 
+                 rdfs:comment "Property that relates an ordered collection with its first item."@en ,
+                              "Propiedad que relaciona una colección ordenada con su primer item."@es ;
+                 
+                 rdfs:subPropertyOf eco:hasOrderedItem ;
+                 
+                 owl:inverseOf eco:isFirstItemOf ;
+                 
+                 rdfs:range [ rdf:type owl:Class ;
+                              owl:intersectionOf ( eco:OrderedItem
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty eco:hasPreviousItem ;
+                                                     owl:cardinality "0"^^xsd:nonNegativeInteger
+                                                   ]
+                                                   [ rdf:type owl:Restriction ;
+                                                     owl:onProperty eco:hasIndex ;
+                                                     owl:hasValue "1"^^xsd:positiveInteger
+                                                   ]
+                                                 )
+                            ] .
+
+
+
+###  http://purl.org/ceu/eco#hasItem
+
+eco:hasItem rdf:type owl:InverseFunctionalProperty ,
+                     owl:ObjectProperty ;
+            
+            rdfs:label "has item"@en ,
+                       "tiene item"@es ;
+            
+            rdfs:comment "Property that relates a collection with an item that is part of it."@en ,
+                         "Propiedad que relaciona una colección con un item que forma parte de ella."@es ;
+            
+            rdfs:domain eco:Collection ;
+            
+            rdfs:range eco:Item ;
+            
+            owl:inverseOf eco:isItemOf .
+
+
+
+###  http://purl.org/ceu/eco#hasLastItem
+
+eco:hasLastItem rdf:type owl:FunctionalProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:label "has last item"@en ,
+                           "tiene último item"@es ;
+                
+                rdfs:comment "Property that relates an ordered collection with its last item."@en ,
+                             "Propiedad que relaciona una colección ordenada con su último item."@es ;
+                
+                rdfs:subPropertyOf eco:hasOrderedItem ;
+                
+                rdfs:range [ rdf:type owl:Class ;
+                             owl:intersectionOf ( eco:OrderedItem
+                                                  [ rdf:type owl:Restriction ;
+                                                    owl:onProperty eco:hasNextItem ;
+                                                    owl:cardinality "0"^^xsd:nonNegativeInteger
+                                                  ]
+                                                )
+                           ] .
+
+
+
+###  http://purl.org/ceu/eco#hasNextItem
+
+eco:hasNextItem rdf:type owl:FunctionalProperty ,
+                         owl:InverseFunctionalProperty ,
+                         owl:ObjectProperty ;
+                
+                rdfs:label "has next item"@en ,
+                           "tiene siguiente item"@es ;
+                
+                rdfs:comment "Property that relates an ordered item with other that follows it immediately in the same ordered collection."@en ,
+                             "Propiedad que relaciona un item ordenado con otro que le sigue inmediatamente en un misma colección ordenada."@es ;
+                
+                rdfs:subPropertyOf eco:followedByItem .
+
+
+
+###  http://purl.org/ceu/eco#hasOrderedItem
+
+eco:hasOrderedItem rdf:type owl:ObjectProperty ;
+                   
+                   rdfs:label "has ordered item"@en ,
+                              "tiene item ordenado"@es ;
+                   
+                   rdfs:comment "Property that relates an ordered collection with an ordered item that is part of it."@en ,
+                                "Propiedad que relaciona una colección ordenada con un item ordenado que forma parte de ella."@es ;
+                   
+                   rdfs:domain eco:OrderedCollection ;
+                   
+                   rdfs:range eco:OrderedItem ;
+                   
+                   rdfs:subPropertyOf eco:hasItem ;
+                   
+                   owl:inverseOf eco:isOrderedItemOf .
+
+
+
+###  http://purl.org/ceu/eco#hasPreviousItem
+
+eco:hasPreviousItem rdf:type owl:FunctionalProperty ,
+                             owl:InverseFunctionalProperty ,
+                             owl:ObjectProperty ;
+                    
+                    rdfs:label "has previous item"@en ,
+                               "tiene previo item"@es ;
+                    
+                    rdfs:comment "Property that relates an ordered item with another that precedes it immediately in the same ordered collection."@en ,
+                                 "Propiedad que relaciona un item ordenado con otro que le precede inmediatamente en una misma colección ordenada."@es ;
+                    
+                    owl:inverseOf eco:hasNextItem ;
+                    
+                    rdfs:subPropertyOf eco:precededByItem .
+
+
+
+###  http://purl.org/ceu/eco#isElementOf
+
+eco:isElementOf rdf:type owl:ObjectProperty ;
+                
+                rdfs:label "is element of"@en ,
+                           "es elemento de"@es ;
+                
+                rdfs:comment "Property that relates an element or object with a collection that belongs to."@en ,
+                             "Propiedad que relaciona un elemento u objeto con una colección a la que pertenece."@es ;
+                
+                rdfs:range eco:Collection .
+
+
+
 ###  http://purl.org/ceu/eco#isFirstItemOf
 
-:isFirstItemOf rdf:type owl:ObjectProperty ;
-               
-               rdfs:label "is first item of"@en ,
-                          "es primer item de"@es ;
-               
-               rdfs:comment "Property that relates an ordered item with an ordered collection in which the item occupies the first position."@en ,
-                            "Propiedad que relaciona un item ordenado con una colección ordenada en la que el item ocupa la primera posición."@es ;
-               
-               rdfs:subPropertyOf :isOrderedItemOf ;
-               
-               owl:inverseOf <http://purl.org/ceu/eco/1.0#hasFirstItem> .
+eco:isFirstItemOf rdf:type owl:ObjectProperty ;
+                  
+                  rdfs:label "is first item of"@en ,
+                             "es primer item de"@es ;
+                  
+                  rdfs:comment "Property that relates an ordered item with an ordered collection in which the item occupies the first position."@en ,
+                               "Propiedad que relaciona un item ordenado con una colección ordenada en la que el item ocupa la primera posición."@es ;
+                  
+                  rdfs:subPropertyOf eco:isOrderedItemOf .
 
 
 
 ###  http://purl.org/ceu/eco#isItemOf
 
-:isItemOf rdf:type owl:FunctionalProperty ,
-                   owl:ObjectProperty ;
-          
-          rdfs:label "is item of"@en ,
-                     "es item de"@es ;
-          
-          rdfs:comment "Property that relates an item with the collection that is part of."@en ,
-                       "Propiedad que relaciona un item con la colección de la que forma parte."@es ;
-          
-          owl:inverseOf <http://purl.org/ceu/eco/1.0#hasItem> .
+eco:isItemOf rdf:type owl:ObjectProperty ;
+             
+             rdfs:label "is item of"@en ,
+                        "es item de"@es ;
+             
+             rdfs:comment "Property that relates an item with the collection that is part of."@en ,
+                          "Propiedad que relaciona un item con la colección de la que forma parte."@es .
 
 
 
 ###  http://purl.org/ceu/eco#isLastItemOf
 
-:isLastItemOf rdf:type owl:ObjectProperty ;
-              
-              rdfs:label "is last item of"@en ,
-                         "es último item de"@es ;
-              
-              rdfs:comment "Property that relates an ordered item with an ordered collection in which the item occupies the last position."@en ,
-                           "Propiedad que relaciona un item ordenado con una colección ordenada en la que el item ocupa la última posición."@es ;
-              
-              rdfs:subPropertyOf :isOrderedItemOf ;
-              
-              owl:inverseOf <http://purl.org/ceu/eco/1.0#hasLastItem> .
+eco:isLastItemOf rdf:type owl:ObjectProperty ;
+                 
+                 rdfs:label "is last item of"@en ,
+                            "es último item de"@es ;
+                 
+                 rdfs:comment "Property that relates an ordered item with an ordered collection in which the item occupies the last position."@en ,
+                              "Propiedad que relaciona un item ordenado con una colección ordenada en la que el item ocupa la última posición."@es ;
+                 
+                 owl:inverseOf eco:hasLastItem ;
+                 
+                 rdfs:subPropertyOf eco:isOrderedItemOf .
 
 
 
 ###  http://purl.org/ceu/eco#isOrderedItemOf
 
-:isOrderedItemOf rdf:type owl:ObjectProperty ;
-                 
-                 rdfs:label "is ordered item of"@en ,
-                            "es item ordenado de"@es ;
-                 
-                 rdfs:comment "Property that relates an ordered item with the ordered collection that belongs to."@en ,
-                              "Propiedad que relaciona un item ordenado con la colección ordenada a la que pertenece."@es ;
-                 
-                 rdfs:subPropertyOf :isItemOf ;
-                 
-                 owl:inverseOf <http://purl.org/ceu/eco/1.0#hasOrderedItem> .
+eco:isOrderedItemOf rdf:type owl:ObjectProperty ;
+                    
+                    rdfs:label "is ordered item of"@en ,
+                               "es item ordenado de"@es ;
+                    
+                    rdfs:comment "Property that relates an ordered item with the ordered collection that belongs to."@en ,
+                                 "Propiedad que relaciona un item ordenado con la colección ordenada a la que pertenece."@es ;
+                    
+                    rdfs:subPropertyOf eco:isItemOf .
 
 
 
-###  http://purl.org/ceu/eco/1.0#belongsTo
+###  http://purl.org/ceu/eco#precededByItem
 
-<http://purl.org/ceu/eco/1.0#belongsTo> rdf:type owl:ObjectProperty ;
-                                        
-                                        rdfs:label "belongs to"@en ,
-                                                   "pertenece a"@es ;
-                                        
-                                        rdfs:comment "Property that relates an element or object with a collection that belongs to."@en ,
-                                                     "Propiedad que relaciona un elemento u objeto con una colección a la que pertenece."@es ;
-                                        
-                                        rdfs:range <http://purl.org/ceu/eco/1.0#Collection> .
-
-
-
-###  http://purl.org/ceu/eco/1.0#followedBy
-
-<http://purl.org/ceu/eco/1.0#followedBy> rdf:type owl:ObjectProperty ,
-                                                  owl:TransitiveProperty ;
-                                         
-                                         rdfs:label "followed by"@en ,
-                                                    "seguido por"@es ;
-                                         
-                                         rdfs:comment "Property that relates an ordered item with another that follows it after in the same ordered collection."@en ,
-                                                      "Propiedad que relaciona un item ordenado con otro que le sigue después en una misma colección ordenada."@es ;
-                                         
-                                         rdfs:range <http://purl.org/ceu/eco/1.0#OrderedItem> ;
-                                         
-                                         rdfs:domain <http://purl.org/ceu/eco/1.0#OrderedItem> ;
-                                         
-                                         owl:inverseOf <http://purl.org/ceu/eco/1.0#precededBy> .
+eco:precededByItem rdf:type owl:ObjectProperty ,
+                            owl:TransitiveProperty ;
+                   
+                   rdfs:label "preceded by item"@en ,
+                              "precedido por item"@es ;
+                   
+                   rdfs:comment "Property that relates an ordered item with another that precedes it in the same ordered collection."@en ,
+                                "Propiedad que relaciona un item ordenado con otro que le precede en una misma colección ordenada."@es ;
+                   
+                   rdfs:range eco:OrderedItem ;
+                   
+                   rdfs:domain eco:OrderedItem .
 
 
 
-###  http://purl.org/ceu/eco/1.0#hasContent
+###  http://www.w3.org/2002/07/owl#topObjectProperty
 
-<http://purl.org/ceu/eco/1.0#hasContent> rdf:type owl:FunctionalProperty ,
-                                                  owl:ObjectProperty ;
-                                         
-                                         rdfs:label "has content"@en ,
-                                                    "contiene"@es ;
-                                         
-                                         rdfs:comment "Property that relates an item with the element or object that contains."@en ,
-                                                      "Propiedad que relaciona un Item con el elemento u objecto que contiene."@es ;
-                                         
-                                         rdfs:domain <http://purl.org/ceu/eco/1.0#Item> ;
-                                         
-                                         rdfs:subPropertyOf owl:topObjectProperty ;
-                                         
-                                         rdfs:range [ rdf:type owl:Class ;
-                                                      owl:complementOf <http://purl.org/ceu/eco/1.0#Item>
-                                                    ] .
-
-
-
-###  http://purl.org/ceu/eco/1.0#hasElement
-
-<http://purl.org/ceu/eco/1.0#hasElement> rdf:type owl:ObjectProperty ;
-                                         
-                                         rdfs:label "has element"@en ,
-                                                    "tiene elemento"@es ;
-                                         
-                                         rdfs:comment "Property that relates a collection with an element that belongs to it."@en ,
-                                                      "Propiedad que relaciona una colección con un elemento que pertenece a ella."@es ;
-                                         
-                                         rdfs:domain <http://purl.org/ceu/eco/1.0#Collection> ;
-                                         
-                                         owl:inverseOf <http://purl.org/ceu/eco/1.0#belongsTo> ;
-                                         
-                                         owl:propertyChainAxiom ( <http://purl.org/ceu/eco/1.0#hasItem>
-                                                                  <http://purl.org/ceu/eco/1.0#hasContent>
-                                                                ) .
-
-
-
-###  http://purl.org/ceu/eco/1.0#hasFirstItem
-
-<http://purl.org/ceu/eco/1.0#hasFirstItem> rdf:type owl:FunctionalProperty ,
-                                                    owl:ObjectProperty ;
-                                           
-                                           rdfs:label "has first item"@en ,
-                                                      "tiene primer item"@es ;
-                                           
-                                           rdfs:comment "Property that relates an ordered collection with its first item."@en ,
-                                                        "Propiedad que relaciona una colección ordenada con su primer item."@es ;
-                                           
-                                           rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
-                                           
-                                           rdfs:range [ rdf:type owl:Class ;
-                                                        owl:intersectionOf ( <http://purl.org/ceu/eco/1.0#OrderedItem>
-                                                                             [ rdf:type owl:Restriction ;
-                                                                               owl:onProperty <http://purl.org/ceu/eco/1.0#hasPreviousItem> ;
-                                                                               owl:cardinality "0"^^xsd:nonNegativeInteger
-                                                                             ]
-                                                                             [ rdf:type owl:Restriction ;
-                                                                               owl:onProperty <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                                                                               owl:hasValue "1"^^xsd:positiveInteger
-                                                                             ]
-                                                                           )
-                                                      ] .
-
-
-
-###  http://purl.org/ceu/eco/1.0#hasItem
-
-<http://purl.org/ceu/eco/1.0#hasItem> rdf:type owl:ObjectProperty ;
-                                      
-                                      rdfs:label "has item"@en ,
-                                                 "tiene item"@es ;
-                                      
-                                      rdfs:comment "Property that relates a collection with an item that is part of it."@en ,
-                                                   "Propiedad que relaciona una colección con un item que forma parte de ella."@es ;
-                                      
-                                      rdfs:domain <http://purl.org/ceu/eco/1.0#Collection> ;
-                                      
-                                      rdfs:range <http://purl.org/ceu/eco/1.0#Item> .
-
-
-
-###  http://purl.org/ceu/eco/1.0#hasLastItem
-
-<http://purl.org/ceu/eco/1.0#hasLastItem> rdf:type owl:FunctionalProperty ,
-                                                   owl:ObjectProperty ;
-                                          
-                                          rdfs:label "has last item"@en ,
-                                                     "tiene último item"@es ;
-                                          
-                                          rdfs:comment "Property that relates an ordered collection with its last item."@en ,
-                                                       "Propiedad que relaciona una colección ordenada con su último item."@es ;
-                                          
-                                          rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
-                                          
-                                          rdfs:range [ rdf:type owl:Class ;
-                                                       owl:intersectionOf ( <http://purl.org/ceu/eco/1.0#OrderedItem>
-                                                                            [ rdf:type owl:Restriction ;
-                                                                              owl:onProperty <http://purl.org/ceu/eco/1.0#hasNextItem> ;
-                                                                              owl:cardinality "0"^^xsd:nonNegativeInteger
-                                                                            ]
-                                                                          )
-                                                     ] .
-
-
-
-###  http://purl.org/ceu/eco/1.0#hasNextItem
-
-<http://purl.org/ceu/eco/1.0#hasNextItem> rdf:type owl:FunctionalProperty ,
-                                                   owl:InverseFunctionalProperty ,
-                                                   owl:ObjectProperty ;
-                                          
-                                          rdfs:label "has next item"@en ,
-                                                     "tiene siguiente item"@es ;
-                                          
-                                          rdfs:comment "Property that relates an ordered item with other that follows it immediately in the same ordered collection."@en ,
-                                                       "Propiedad que relaciona un item ordenado con otro que le sigue inmediatamente en un misma colección ordenada."@es ;
-                                          
-                                          rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#followedBy> ;
-                                          
-                                          owl:inverseOf <http://purl.org/ceu/eco/1.0#hasPreviousItem> .
-
-
-
-###  http://purl.org/ceu/eco/1.0#hasOrderedItem
-
-<http://purl.org/ceu/eco/1.0#hasOrderedItem> rdf:type owl:ObjectProperty ;
-                                             
-                                             rdfs:label "has ordered item"@en ,
-                                                        "tiene item ordenado"@es ;
-                                             
-                                             rdfs:comment "Property that relates an ordered collection with an ordered item that is part of it."@en ,
-                                                          "Propiedad que relaciona una colección ordenada con un item ordenado que forma parte de ella."@es ;
-                                             
-                                             rdfs:domain <http://purl.org/ceu/eco/1.0#OrderedCollection> ;
-                                             
-                                             rdfs:range <http://purl.org/ceu/eco/1.0#OrderedItem> ;
-                                             
-                                             rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#hasItem> .
-
-
-
-###  http://purl.org/ceu/eco/1.0#hasPreviousItem
-
-<http://purl.org/ceu/eco/1.0#hasPreviousItem> rdf:type owl:FunctionalProperty ,
-                                                       owl:InverseFunctionalProperty ,
-                                                       owl:ObjectProperty ;
-                                              
-                                              rdfs:label "has previous item"@en ,
-                                                         "tiene previo item"@es ;
-                                              
-                                              rdfs:comment "Property that relates an ordered item with another that precedes it immediately in the same ordered collection."@en ,
-                                                           "Propiedad que relaciona un item ordenado con otro que le precede inmediatamente en una misma colección ordenada."@es ;
-                                              
-                                              rdfs:subPropertyOf <http://purl.org/ceu/eco/1.0#precededBy> .
-
-
-
-###  http://purl.org/ceu/eco/1.0#precededBy
-
-<http://purl.org/ceu/eco/1.0#precededBy> rdf:type owl:ObjectProperty ,
-                                                  owl:TransitiveProperty ;
-                                         
-                                         rdfs:label "preceded by"@en ,
-                                                    "precedido por"@es ;
-                                         
-                                         rdfs:comment "Property that relates an ordered item with another that precedes it in the same ordered collection."@en ,
-                                                      "Propiedad que relaciona un item ordenado con otro que le precede en una misma colección ordenada."@es ;
-                                         
-                                         rdfs:domain <http://purl.org/ceu/eco/1.0#OrderedItem> ;
-                                         
-                                         rdfs:range <http://purl.org/ceu/eco/1.0#OrderedItem> .
+owl:topObjectProperty rdf:type owl:ObjectProperty .
 
 
 
@@ -317,56 +413,43 @@
 #################################################################
 
 
-###  http://purl.org/ceu/eco#hasError
+###  http://purl.org/ceu/eco#hasCardinality
 
-:hasError rdf:type owl:DatatypeProperty ;
-          
-          rdfs:label "has error"@en ,
-                     "tiene error"@es ;
-          
-          rdfs:comment "Property linking a resource that contains a logical error (which results in it belonging to the class owl:Nothing, therefore making the model inconsistent) to a textual description of that error."@en ,
-                       "Propiedad que relaciona un recurso que contiene un error lógico (que conlleva la pertenencia a la clase owl:Nothing, y por tanto hace el modelo inconsistente) con una descripción textual del error."@es ;
-          
-          rdfs:range xsd:string ;
-          
-          rdfs:domain [ rdf:type owl:Restriction ;
-                        owl:onProperty :hasError ;
-                        owl:cardinality "0"^^xsd:nonNegativeInteger
-                      ] .
+eco:hasCardinality rdf:type owl:DatatypeProperty ,
+                            owl:FunctionalProperty ;
+                   
+                   rdfs:label "has cardinality"@en ,
+                              "tiene cardinalidad"@es ;
+                   
+                   rdfs:comment "Property that relates a collection with the number of elements or objects that contains."@en ,
+                                "Propiedad que relaciona una colección con el número de elementos que contiene."@es ;
+                   
+                   rdfs:domain eco:Collection ;
+                   
+                   rdfs:range xsd:nonNegativeInteger .
 
 
 
-###  http://purl.org/ceu/eco/1.0#hasCardinality
+###  http://purl.org/ceu/eco#hasIndex
 
-<http://purl.org/ceu/eco/1.0#hasCardinality> rdf:type owl:DatatypeProperty ,
-                                                      owl:FunctionalProperty ;
-                                             
-                                             rdfs:label "has cardinality"@en ,
-                                                        "tiene cardinalidad"@es ;
-                                             
-                                             rdfs:comment "Property that relates a collection with the number of elements or objects that contains."@en ,
-                                                          "Propiedad que relaciona una colección con el número de elementos que contiene."@es ;
-                                             
-                                             rdfs:domain <http://purl.org/ceu/eco/1.0#Collection> ;
-                                             
-                                             rdfs:range xsd:nonNegativeInteger .
+eco:hasIndex rdf:type owl:DatatypeProperty ,
+                      owl:FunctionalProperty ;
+             
+             rdfs:label "has index"@en ,
+                        "tiene índice"@es ;
+             
+             rdfs:comment "Property that relates an ordered item with its position in an ordered collection."@en ,
+                          "Propiedad que relaciona un item ordenado con su posición en una colección ordenada."@es ;
+             
+             rdfs:domain eco:OrderedItem ;
+             
+             rdfs:range xsd:positiveInteger .
 
 
 
-###  http://purl.org/ceu/eco/1.0#hasIndex
+###  http://www.essepuntato.it/2009/10/error/hasError
 
-<http://purl.org/ceu/eco/1.0#hasIndex> rdf:type owl:DatatypeProperty ,
-                                                owl:FunctionalProperty ;
-                                       
-                                       rdfs:label "has index"@en ,
-                                                  "tiene índice"@es ;
-                                       
-                                       rdfs:comment "Property that relates an ordered item with its position in an ordered collection."@en ,
-                                                    "Propiedad que relaciona un item ordenado con su posición en una colección ordenada."@es ;
-                                       
-                                       rdfs:domain <http://purl.org/ceu/eco/1.0#OrderedItem> ;
-                                       
-                                       rdfs:range xsd:positiveInteger .
+<http://www.essepuntato.it/2009/10/error/hasError> rdf:type owl:DatatypeProperty .
 
 
 
@@ -379,387 +462,646 @@
 #################################################################
 
 
+###  http://purl.org/ceu/eco#Box
+
+eco:Box rdf:type owl:Class ;
+        
+        rdfs:subClassOf eco:FixedCardinalityCollection ,
+                        eco:Multiheteroset .
+
+
+
+###  http://purl.org/ceu/eco#Collection
+
+eco:Collection rdf:type owl:Class ;
+               
+               owl:disjointWith eco:Item .
+
+
+
+###  http://purl.org/ceu/eco#Combination
+
+eco:Combination rdf:type owl:Class ;
+                
+                rdfs:subClassOf eco:Heterocombination ,
+                                eco:Multicombination ,
+                                eco:Set .
+
+
+
+###  http://purl.org/ceu/eco#Element
+
+eco:Element rdf:type owl:Class ;
+            
+            rdfs:label "Element"@en ,
+                       "Elemento"@es ;
+            
+            rdfs:comment "Element or object beloging to a collection."@en ,
+                         "Elemento u objeto perteneciente a una colección."@es .
+
+
+
+###  http://purl.org/ceu/eco#FixedCardinalityCollection
+
+eco:FixedCardinalityCollection rdf:type owl:Class ;
+                               
+                               rdfs:label "Fixed cardinality collection"@en ,
+                                          "Colección de cardinalidad fija"@es ;
+                               
+                               rdfs:subClassOf eco:Collection ;
+                               
+                               rdfs:comment "A fixed cardiality collection is a collection of a fixed number of elements."@en ,
+                                            "Una colección de cardinalidad fija es una colección con un número fijo de elementos."@es .
+
+
+
 ###  http://purl.org/ceu/eco#Heterocombination
 
-:Heterocombination rdf:type owl:Class ;
-                   
-                   rdfs:label "Heterocombination"@en ,
-                              "Heterocombinación"@es ;
-                   
-                   rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Box> ,
-                                   <http://purl.org/ceu/eco/1.0#Heteroset> ;
-                   
-                   rdfs:comment "An heterocombination is an heterogeneous, with uniqueness, non ordered and with fixed cardinality collection."@en ,
-                                "Una heterocombinación es una colección heterogénea, con unicidad, no ordenada y de cardinalidad fija."@es .
+eco:Heterocombination rdf:type owl:Class ;
+                      
+                      rdfs:subClassOf eco:Box ,
+                                      eco:Heteroset .
 
 
 
 ###  http://purl.org/ceu/eco#Heteroranking
 
-:Heteroranking rdf:type owl:Class ;
-               
-               rdfs:label "Heteroranking"@en ,
-                          "Heteroranking"@es ;
-               
-               rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Heteroset> ,
-                               <http://purl.org/ceu/eco/1.0#List> ;
-               
-               rdfs:comment "An heteroranking is an heterogeneous, with uniqueness, ordered and with variable cardinality collection."@en ,
-                            "Un heteroranking es una colección heterogénea, con unicidad, ordenada y de cardinalidad variable."@es .
+eco:Heteroranking rdf:type owl:Class ;
+                  
+                  rdfs:subClassOf eco:Heteroset ,
+                                  eco:List .
+
+
+
+###  http://purl.org/ceu/eco#Heteroset
+
+eco:Heteroset rdf:type owl:Class ;
+              
+              rdfs:subClassOf eco:Multiheteroset ,
+                              eco:UniquenessCollection .
 
 
 
 ###  http://purl.org/ceu/eco#Heterovariation
 
-:Heterovariation rdf:type owl:Class ;
-                 
-                 rdfs:label "Heterovariation"@en ,
-                            "Heterovariación"@es ;
-                 
-                 rdfs:subClassOf :Heterocombination ,
-                                 :Heteroranking ,
-                                 <http://purl.org/ceu/eco/1.0#Tuple> ;
-                 
-                 rdfs:comment "An heterovariation is an heterogeneous, with uniqueness, ordered and with fixed cardinality collection."@en ,
-                              "Una heterovariación es una colección heterogénea, con unicidad, ordenada y de cardinalidad fija."@es .
+eco:Heterovariation rdf:type owl:Class ;
+                    
+                    rdfs:subClassOf eco:Heterocombination ,
+                                    eco:Heteroranking ,
+                                    eco:Tuple .
 
 
 
 ###  http://purl.org/ceu/eco#HomogeneousCollection
 
-:HomogeneousCollection rdf:type owl:Class ;
-                       
-                       rdfs:label "Homogeneous collection"@en ,
-                                  "Colección homogénea"@es ;
-                       
-                       rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Collection> ;
-                       
-                       rdfs:comment "An homogeneous collection is a collection with all its element of the same type."@en ,
-                                    "Una coleccion homogénea es una colección donde todos los elementos son del mismo tipo."@es .
+eco:HomogeneousCollection rdf:type owl:Class ;
+                          
+                          rdfs:label "Homogeneous collection"@en ,
+                                     "Colección homogénea"@es ;
+                          
+                          owl:equivalentClass [ rdf:type owl:Class ;
+                                                owl:intersectionOf ( eco:Collection
+                                                                     [ rdf:type owl:Restriction ;
+                                                                       owl:onProperty eco:hasElementsOfType ;
+                                                                       owl:cardinality "1"^^xsd:nonNegativeInteger
+                                                                     ]
+                                                                   )
+                                              ] ;
+                          
+                          rdfs:comment "An homogeneous collection is a collection with all its element of the same type."@en ,
+                                       "Una coleccion homogénea es una colección donde todos los elementos son del mismo tipo."@es .
+
+
+
+###  http://purl.org/ceu/eco#Item
+
+eco:Item rdf:type owl:Class ;
+         
+         rdfs:label "Item"@en ,
+                    "Item"@es ;
+         
+         rdfs:comment "An item is a container for elements of collections. It's a workaround to allow duplicate elements in a collections."@en ,
+                      "Un item es un contenedor para los elementos de las colecciones. Es un rodeo para permitir la duplicidad de elementos en la colecciones."@es .
+
+
+
+###  http://purl.org/ceu/eco#List
+
+eco:List rdf:type owl:Class ;
+         
+         rdfs:subClassOf eco:Multiheteroset ,
+                         eco:OrderedCollection .
+
+
+
+###  http://purl.org/ceu/eco#Multicombination
+
+eco:Multicombination rdf:type owl:Class ;
+                     
+                     rdfs:subClassOf eco:Box ,
+                                     eco:Multiset .
+
+
+
+###  http://purl.org/ceu/eco#Multiheteroset
+
+eco:Multiheteroset rdf:type owl:Class ;
+                   
+                   rdfs:subClassOf eco:Collection .
+
+
+
+###  http://purl.org/ceu/eco#Multiset
+
+eco:Multiset rdf:type owl:Class ;
+             
+             rdfs:subClassOf eco:HomogeneousCollection ,
+                             eco:Multiheteroset .
+
+
+
+###  http://purl.org/ceu/eco#OrderedCollection
+
+eco:OrderedCollection rdf:type owl:Class ;
+                      
+                      rdfs:label "Ordered collection"@en ,
+                                 "Colección ordenada"@es ;
+                      
+                      owl:equivalentClass [ rdf:type owl:Class ;
+                                            owl:intersectionOf ( eco:Collection
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty eco:hasItem ;
+                                                                   owl:allValuesFrom eco:OrderedItem
+                                                                 ]
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty eco:hasFirstItem ;
+                                                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                                                 ]
+                                                                 [ rdf:type owl:Restriction ;
+                                                                   owl:onProperty eco:hasLastItem ;
+                                                                   owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                                                 ]
+                                                               )
+                                          ] ;
+                      
+                      rdfs:comment "An ordered collection is a collection where elements follow a sequential order."@en ,
+                                   "Una colección ordenada es una colección donde los elementos siguen un orden secuencial."@es .
+
+
+
+###  http://purl.org/ceu/eco#OrderedItem
+
+eco:OrderedItem rdf:type owl:Class ;
+                
+                rdfs:label "Ordered item"@en ,
+                           "Item ordenado"@es ;
+                
+                owl:equivalentClass [ rdf:type owl:Class ;
+                                      owl:intersectionOf ( eco:Item
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty eco:hasNextItem ;
+                                                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                                           ]
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty eco:hasPreviousItem ;
+                                                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
+                                                           ]
+                                                           [ rdf:type owl:Restriction ;
+                                                             owl:onProperty eco:hasIndex ;
+                                                             owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
+                                                             owl:onDataRange xsd:positiveInteger
+                                                           ]
+                                                         )
+                                    ] ;
+                
+                rdfs:comment "An ordered item is an item that is part of an ordered sequence of items."@en ,
+                             "Un item ordenado es un item que forma parte de una secuencia ordenada de items."@es .
 
 
 
 ###  http://purl.org/ceu/eco#Ranking
 
-:Ranking rdf:type owl:Class ;
-         
-         rdfs:label "Ranking"@en ,
-                    "Ranking"@es ;
-         
-         rdfs:subClassOf :Heteroranking ,
-                         <http://purl.org/ceu/eco/1.0#Sequence> ,
-                         <http://purl.org/ceu/eco/1.0#Set> ;
-         
-         rdfs:comment "A ranking is an homogeneous, with uniqueness, ordered and with variable cardinality collection."@en ,
-                      "Un ranking es una colección homogénea, con unicidad, ordenada y de cardinalidad variable."@es .
+eco:Ranking rdf:type owl:Class ;
+            
+            rdfs:subClassOf eco:Heteroranking ,
+                            eco:Sequence ,
+                            eco:Set .
+
+
+
+###  http://purl.org/ceu/eco#Sequence
+
+eco:Sequence rdf:type owl:Class ;
+             
+             rdfs:subClassOf eco:List ,
+                             eco:Multiset .
+
+
+
+###  http://purl.org/ceu/eco#Set
+
+eco:Set rdf:type owl:Class ;
+        
+        rdfs:subClassOf eco:Heteroset ,
+                        eco:Multiset .
+
+
+
+###  http://purl.org/ceu/eco#Tuple
+
+eco:Tuple rdf:type owl:Class ;
+          
+          rdfs:subClassOf eco:Box ,
+                          eco:List .
+
+
+
+###  http://purl.org/ceu/eco#UniquenessCollection
+
+eco:UniquenessCollection rdf:type owl:Class ;
+                         
+                         rdfs:label "Uniqueness collection"@en ,
+                                    "Colección con unicidad"@es ;
+                         
+                         rdfs:subClassOf eco:Collection ;
+                         
+                         rdfs:comment "An uniqueness collection is a collection where each element appears at most one time, that is, element repetitions are not allowed."@en ,
+                                      "Una colección con unicidad es una colección donde cada elemento aparece a lo sumo una vez, es decir, donde no se permiten las repeticiones de elementos."@es .
 
 
 
 ###  http://purl.org/ceu/eco#Variation
 
-:Variation rdf:type owl:Class ;
+eco:Variation rdf:type owl:Class ;
+              
+              rdfs:subClassOf eco:Combination ,
+                              eco:Heterovariation ,
+                              eco:Ranking ,
+                              eco:Vector .
+
+
+
+###  http://purl.org/ceu/eco#Vector
+
+eco:Vector rdf:type owl:Class ;
            
-           rdfs:label "Variation"@en ,
-                      "Variación"@es ;
+           rdfs:subClassOf eco:Multicombination ,
+                           eco:Sequence ,
+                           eco:Tuple .
+
+
+
+###  http://purl.org/ceu/eco#1CardinalityCollection
+
+<http://purl.org/ceu/eco#1CardinalityCollection> rdf:type owl:Class ;
+                                                 
+                                                 owl:equivalentClass [ rdf:type owl:Class ;
+                                                                       owl:intersectionOf ( eco:FixedCardinalityCollection
+                                                                                            [ rdf:type owl:Restriction ;
+                                                                                              owl:onProperty eco:hasItem ;
+                                                                                              owl:onClass eco:Item ;
+                                                                                              owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
+                                                                                            ]
+                                                                                          )
+                                                                     ] .
+
+
+
+###  http://purl.org/ceu/eco#2CardinalityCollection
+
+<http://purl.org/ceu/eco#2CardinalityCollection> rdf:type owl:Class ;
+                                                 
+                                                 owl:equivalentClass [ rdf:type owl:Class ;
+                                                                       owl:intersectionOf ( eco:FixedCardinalityCollection
+                                                                                            [ rdf:type owl:Restriction ;
+                                                                                              owl:onProperty eco:hasItem ;
+                                                                                              owl:onClass eco:Item ;
+                                                                                              owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
+                                                                                            ]
+                                                                                          )
+                                                                     ] .
+
+
+
+###  http://purl.org/ceu/eco#3CardinalityCollection
+
+<http://purl.org/ceu/eco#3CardinalityCollection> rdf:type owl:Class ;
+                                                 
+                                                 owl:equivalentClass [ rdf:type owl:Class ;
+                                                                       owl:intersectionOf ( eco:FixedCardinalityCollection
+                                                                                            [ rdf:type owl:Restriction ;
+                                                                                              owl:onProperty eco:hasItem ;
+                                                                                              owl:onClass eco:Item ;
+                                                                                              owl:qualifiedCardinality "3"^^xsd:nonNegativeInteger
+                                                                                            ]
+                                                                                          )
+                                                                     ] .
+
+
+
+###  http://www.w3.org/2002/07/owl#Thing
+
+owl:Thing rdf:type owl:Class .
+
+
+
+
+
+#################################################################
+#
+#    Individuals
+#
+#################################################################
+
+
+###  http://purl.org/ceu/eco#Box
+
+eco:Box rdf:type eco:Box ,
+                 owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Collection
+
+eco:Collection rdf:type eco:Collection ,
+                        owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Combination
+
+eco:Combination rdf:type eco:Combination ,
+                         owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Heterocombination
+
+eco:Heterocombination rdf:type eco:Heterocombination ,
+                               owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Heteroranking
+
+eco:Heteroranking rdf:type eco:Heteroranking ,
+                           owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Heteroset
+
+eco:Heteroset rdf:type eco:Heteroset ,
+                       owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Heterovariation
+
+eco:Heterovariation rdf:type eco:Heterovariation ,
+                             owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#List
+
+eco:List rdf:type eco:List ,
+                  owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Multicombination
+
+eco:Multicombination rdf:type eco:Multicombination ,
+                              owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Multiheteroset
+
+eco:Multiheteroset rdf:type eco:Multiheteroset ,
+                            owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Multiset
+
+eco:Multiset rdf:type eco:Multiset ,
+                      owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Ranking
+
+eco:Ranking rdf:type eco:Ranking ,
+                     owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Sequence
+
+eco:Sequence rdf:type eco:Sequence ,
+                      owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Set
+
+eco:Set rdf:type eco:Set ,
+                 owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Tuple
+
+eco:Tuple rdf:type eco:Tuple ,
+                   owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Variation
+
+eco:Variation rdf:type eco:Variation ,
+                       owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#Vector
+
+eco:Vector rdf:type eco:Vector ,
+                    owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#col1
+
+eco:col1 rdf:type eco:FixedCardinalityCollection ,
+                  owl:NamedIndividual .
+
+
+
+###  http://purl.org/ceu/eco#col2
+
+eco:col2 rdf:type eco:HomogeneousCollection ,
+                  owl:NamedIndividual ,
+                  [ rdf:type owl:Restriction ;
+                    owl:onProperty eco:hasElement ;
+                    owl:allValuesFrom eco:Element
+                  ] ;
+         
+         eco:hasElementsOfType eco:elemento1 .
+
+
+
+###  http://purl.org/ceu/eco#elemento1
+
+eco:elemento1 rdf:type eco:Element ,
+                       owl:NamedIndividual .
+
+
+
+
+
+#################################################################
+#
+#    Annotations
+#
+#################################################################
+
+
+eco:Variation rdfs:label "Variation"@en ,
+                         "Variación"@es ;
+              
+              rdfs:comment "A variation is an homogeneous, with uniqueness, ordered and with fixed cardinality collection."@en ,
+                           "Una variación es una colección homogénea, con unicidad, ordenada y de cardinalidad fija."@es .
+
+
+
+eco:Vector rdfs:label "Vector"@en ,
+                      "Vector"@es ;
            
-           rdfs:subClassOf :Heterovariation ,
-                           :Ranking ,
-                           <http://purl.org/ceu/eco/1.0#Combination> ,
-                           <http://purl.org/ceu/eco/1.0#Vector> ;
-           
-           rdfs:comment "A variation is an homogeneous, with uniqueness, ordered and with fixed cardinality collection."@en ,
-                        "Una variación es una colección homogénea, con unicidad, ordenada y de cardinalidad fija."@es .
+           rdfs:comment "A vector is an homogeneous, without uniqueness, ordered and with fixed cardinality collection."@en ,
+                        "Un vector es una colección homogénea, sin unicidad, ordenada y de cardinalidad fija."@es .
 
 
 
-###  http://purl.org/ceu/eco/1.0#Box
+eco:Set rdfs:label "Set"@en ,
+                   "Conjunto"@es ;
+        
+        rdfs:comment "A set is an homogeneous, with uniqueness, non ordered and with variable cardinality collection."@en ,
+                     "Un conjunto es una colección homogénea, con unicidad, no ordenada y de cardinalidad fija."@es .
 
-<http://purl.org/ceu/eco/1.0#Box> rdf:type owl:Class ;
-                                  
-                                  rdfs:label "Box"@en ,
-                                             "Caja"@es ;
-                                  
-                                  rdfs:subClassOf <http://purl.org/ceu/eco/1.0#FixedCardinalityCollection> ,
-                                                  <http://purl.org/ceu/eco/1.0#Multiheteroset> ;
-                                  
-                                  rdfs:comment "A box is an heterogeneous, without uniqueness, non ordered and with fixed cardinality collection."@en ,
-                                               "Una caja es una colección heterogénea, sin unicidad, no ordenada y de cardinalidad fija."@es .
 
 
+eco:List rdfs:label "List"@en ,
+                    "Lista"@es ;
+         
+         rdfs:comment "A list is an heterogeneous, without uniqueness, ordered and with variable cardinality collection."@en ,
+                      "Una lista es una colección heterogénea, sin unicidad, ordenada y de cardinalidad variable."@es .
 
-###  http://purl.org/ceu/eco/1.0#Collection
 
-<http://purl.org/ceu/eco/1.0#Collection> rdf:type owl:Class ;
-                                         
-                                         rdfs:label "Collection"@en ,
-                                                    "Colección"@es ;
-                                         
-                                         owl:disjointWith <http://purl.org/ceu/eco/1.0#Item> ;
-                                         
-                                         rdfs:comment "A collection is a group of objects or elements."@en ,
-                                                      "Una colección es una agrupación de objetos o elementos."@es .
 
+eco:Heterovariation rdfs:label "Heterovariation"@en ,
+                               "Heterovariación"@es ;
+                    
+                    rdfs:comment "An heterovariation is an heterogeneous, with uniqueness, ordered and with fixed cardinality collection."@en ,
+                                 "Una heterovariación es una colección heterogénea, con unicidad, ordenada y de cardinalidad fija."@es .
 
 
-###  http://purl.org/ceu/eco/1.0#Combination
 
-<http://purl.org/ceu/eco/1.0#Combination> rdf:type owl:Class ;
-                                          
-                                          rdfs:label "Combination"@en ,
-                                                     "Combinación"@es ;
-                                          
-                                          rdfs:subClassOf :Heterocombination ,
-                                                          <http://purl.org/ceu/eco/1.0#Multicombination> ,
-                                                          <http://purl.org/ceu/eco/1.0#Set> ;
-                                          
-                                          rdfs:comment "A combination is an homogeneous, with uniqueness, non ordered and with fixed cardinality collection."@en ,
-                                                       "Una combinación es una colección homogénea, con unicidad, no ordenada y de cardinalidad fija."@es .
+eco:Heteroranking rdfs:label "Heteroranking"@en ,
+                             "Heteroranking"@es ;
+                  
+                  rdfs:comment "An heteroranking is an heterogeneous, with uniqueness, ordered and with variable cardinality collection."@en ,
+                               "Un heteroranking es una colección heterogénea, con unicidad, ordenada y de cardinalidad variable."@es .
 
 
 
-###  http://purl.org/ceu/eco/1.0#Element
+eco:Multicombination rdfs:label "Multicombination"@en ,
+                                "Multicombinación"@es ;
+                     
+                     rdfs:comment "A multicombination is an homogeneous, without uniqueness, non ordered and with fixed cardinality collection."@en ,
+                                  "Una multicombinación es una colección homogénea, sin unicidad, no ordenada y de cardinalidad fija."@es .
 
-<http://purl.org/ceu/eco/1.0#Element> rdf:type owl:Class ;
-                                      
-                                      rdfs:label "Element"@en ,
-                                                 "Elemento"@es ;
-                                      
-                                      rdfs:comment "Element or object beloging to a collection."@en ,
-                                                   "Elemento u objeto perteneciente a una colección."@es .
 
 
+eco:Tuple rdfs:label "Tuple"@en ,
+                     "Tupla"@es ;
+          
+          rdfs:comment "A tuple is an heterogeneous, without uniqueness, ordered and with fixed cardinality collection."@en ,
+                       "Una tupla es una colección heterogénea, sin unicidad, ordenada y de cardinalidad fija."@es .
 
-###  http://purl.org/ceu/eco/1.0#FixedCardinalityCollection
 
-<http://purl.org/ceu/eco/1.0#FixedCardinalityCollection> rdf:type owl:Class ;
-                                                         
-                                                         rdfs:label "Fixed cardinality collection"@en ,
-                                                                    "Colección de cardinalidad fija"@es ;
-                                                         
-                                                         rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Collection> ;
-                                                         
-                                                         rdfs:comment "A fixed cardiality collection is a collection of a fixed number of elements."@en ,
-                                                                      "Una colección de cardinalidad fija es una colección con un número fijo de elementos."@es .
 
+eco:Ranking rdfs:label "Ranking"@en ,
+                       "Ranking"@es ;
+            
+            rdfs:comment "A ranking is an homogeneous, with uniqueness, ordered and with variable cardinality collection."@en ,
+                         "Un ranking es una colección homogénea, con unicidad, ordenada y de cardinalidad variable."@es .
 
 
-###  http://purl.org/ceu/eco/1.0#Heteroset
 
-<http://purl.org/ceu/eco/1.0#Heteroset> rdf:type owl:Class ;
-                                        
-                                        rdfs:label "Heteroset"@en ,
-                                                   "Heteroconjunto"@es ;
-                                        
-                                        rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Multiheteroset> ,
-                                                        <http://purl.org/ceu/eco/1.0#UniquenessCollection> ;
-                                        
-                                        rdfs:comment "A heteroset is an heterogeneous, with uniqueness, non ordered and with variable cardinality collection."@en ,
-                                                     "Un heteroconjunto es una colección heterogénea, con unicidad, no ordenada y de cardinalidad variable."@es .
-
+eco:Heterocombination rdfs:label "Heterocombination"@en ,
+                                 "Heterocombinación"@es ;
+                      
+                      rdfs:comment "An heterocombination is an heterogeneous, with uniqueness, non ordered and with fixed cardinality collection."@en ,
+                                   "Una heterocombinación es una colección heterogénea, con unicidad, no ordenada y de cardinalidad fija."@es .
 
 
-###  http://purl.org/ceu/eco/1.0#Item
 
-<http://purl.org/ceu/eco/1.0#Item> rdf:type owl:Class ;
-                                   
-                                   rdfs:label "Item"@en ,
-                                              "Item"@es ;
-                                   
-                                   rdfs:comment "An item is a container for elements of collections. It's a workaround to allow duplicate elements in a collections."@en ,
-                                                "Un item es un contenedor para los elementos de las colecciones. Es un rodeo para permitir la duplicidad de elementos en la colecciones."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#List
-
-<http://purl.org/ceu/eco/1.0#List> rdf:type owl:Class ;
-                                   
-                                   rdfs:label "List"@en ,
-                                              "Lista"@es ;
-                                   
-                                   rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Multiheteroset> ,
-                                                   <http://purl.org/ceu/eco/1.0#OrderedCollection> ;
-                                   
-                                   rdfs:comment "A list is an heterogeneous, without uniqueness, ordered and with variable cardinality collection."@en ,
-                                                "Una lista es una colección heterogénea, sin unicidad, ordenada y de cardinalidad variable."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#Multicombination
-
-<http://purl.org/ceu/eco/1.0#Multicombination> rdf:type owl:Class ;
-                                               
-                                               rdfs:label "Multicombination"@en ,
-                                                          "Multicombinación"@es ;
-                                               
-                                               rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Box> ,
-                                                               <http://purl.org/ceu/eco/1.0#Multiset> ;
-                                               
-                                               rdfs:comment "A multicombination is an homogeneous, without uniqueness, non ordered and with fixed cardinality collection."@en ,
-                                                            "Una multicombinación es una colección homogénea, sin unicidad, no ordenada y de cardinalidad fija."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#Multiheteroset
-
-<http://purl.org/ceu/eco/1.0#Multiheteroset> rdf:type owl:Class ;
-                                             
-                                             rdfs:label "Multiheteroset"@en ,
-                                                        "Multiheteroconjunto"@es ;
-                                             
-                                             rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Collection> ;
-                                             
-                                             rdfs:comment "A multiheteroset is an heterogeneous, without uniqueness, non ordered and with variable cardinality collection."@en ,
-                                                          "Un multiheteroconjunto es una colección heterogénea, sin unicidad, no ordenada y de cardilnalidad variable."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#Multiset
-
-<http://purl.org/ceu/eco/1.0#Multiset> rdf:type owl:Class ;
-                                       
-                                       rdfs:label "Multiset"@en ,
-                                                  "Multiconjunto"@es ;
-                                       
-                                       rdfs:subClassOf :HomogeneousCollection ,
-                                                       <http://purl.org/ceu/eco/1.0#Multiheteroset> ;
-                                       
-                                       rdfs:comment "A multiset is an homogeneous, without uniqueness, non ordered and with variable cardinality collection."@en ,
-                                                    "Un multiconjunto es una colección homogenea, sin unicidad, no ordenada y de cardinalidad variable."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#OrderedCollection
-
-<http://purl.org/ceu/eco/1.0#OrderedCollection> rdf:type owl:Class ;
-                                                
-                                                rdfs:label "Ordered collection"@en ,
-                                                           "Colección ordenada"@es ;
-                                                
-                                                owl:equivalentClass [ rdf:type owl:Class ;
-                                                                      owl:intersectionOf ( <http://purl.org/ceu/eco/1.0#Collection>
-                                                                                           [ rdf:type owl:Restriction ;
-                                                                                             owl:onProperty <http://purl.org/ceu/eco/1.0#hasItem> ;
-                                                                                             owl:allValuesFrom <http://purl.org/ceu/eco/1.0#OrderedItem>
-                                                                                           ]
-                                                                                           [ rdf:type owl:Restriction ;
-                                                                                             owl:onProperty <http://purl.org/ceu/eco/1.0#hasFirstItem> ;
-                                                                                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                                                                           ]
-                                                                                           [ rdf:type owl:Restriction ;
-                                                                                             owl:onProperty <http://purl.org/ceu/eco/1.0#hasLastItem> ;
-                                                                                             owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                                                                           ]
-                                                                                         )
-                                                                    ] ;
-                                                
-                                                rdfs:comment "An ordered collection is a collection where elements follow a sequential order."@en ,
-                                                             "Una colección ordenada es una colección donde los elementos siguen un orden secuencial."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#OrderedItem
-
-<http://purl.org/ceu/eco/1.0#OrderedItem> rdf:type owl:Class ;
-                                          
-                                          rdfs:label "Ordered item"@en ,
-                                                     "Item ordenado"@es ;
-                                          
-                                          owl:equivalentClass [ rdf:type owl:Class ;
-                                                                owl:intersectionOf ( <http://purl.org/ceu/eco/1.0#Item>
-                                                                                     [ rdf:type owl:Restriction ;
-                                                                                       owl:onProperty <http://purl.org/ceu/eco/1.0#hasNextItem> ;
-                                                                                       owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                                                                     ]
-                                                                                     [ rdf:type owl:Restriction ;
-                                                                                       owl:onProperty <http://purl.org/ceu/eco/1.0#hasPreviousItem> ;
-                                                                                       owl:maxCardinality "1"^^xsd:nonNegativeInteger
-                                                                                     ]
-                                                                                     [ rdf:type owl:Restriction ;
-                                                                                       owl:onProperty <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                                                                                       owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger ;
-                                                                                       owl:onDataRange xsd:positiveInteger
-                                                                                     ]
-                                                                                   )
-                                                              ] ;
-                                          
-                                          rdfs:comment "An ordered item is an item that is part of an ordered sequence of items."@en ,
-                                                       "Un item ordenado es un item que forma parte de una secuencia ordenada de items."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#Sequence
-
-<http://purl.org/ceu/eco/1.0#Sequence> rdf:type owl:Class ;
-                                       
-                                       rdfs:label "Sequence"@en ,
-                                                  "Secuencia"@es ;
-                                       
-                                       rdfs:subClassOf <http://purl.org/ceu/eco/1.0#List> ,
-                                                       <http://purl.org/ceu/eco/1.0#Multiset> ;
-                                       
-                                       rdfs:comment "A sequence is an homogeneous, without uniqueness, ordered and with variable cardinality collection."@en ,
-                                                    "Una secuencia es una colección homogenea, sin unicidad, ordenada y de cardinalidad variable."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#Set
-
-<http://purl.org/ceu/eco/1.0#Set> rdf:type owl:Class ;
-                                  
-                                  rdfs:label "Set"@en ,
-                                             "Conjunto"@es ;
-                                  
-                                  rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Heteroset> ,
-                                                  <http://purl.org/ceu/eco/1.0#Multiset> ;
-                                  
-                                  rdfs:comment "A set is an homogeneous, with uniqueness, non ordered and with variable cardinality collection."@en ,
-                                               "Un conjunto es una colección homogénea, con unicidad, no ordenada y de cardinalidad fija."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#Tuple
-
-<http://purl.org/ceu/eco/1.0#Tuple> rdf:type owl:Class ;
-                                    
-                                    rdfs:label "Tuple"@en ,
-                                               "Tupla"@es ;
-                                    
-                                    rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Box> ,
-                                                    <http://purl.org/ceu/eco/1.0#List> ;
-                                    
-                                    rdfs:comment "A tuple is an heterogeneous, without uniqueness, ordered and with fixed cardinality collection."@en ,
-                                                 "Una tupla es una colección heterogénea, sin unicidad, ordenada y de cardinalidad fija."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#UniquenessCollection
-
-<http://purl.org/ceu/eco/1.0#UniquenessCollection> rdf:type owl:Class ;
-                                                   
-                                                   rdfs:label "Uniqueness collection"@en ,
-                                                              "Colección con unicidad"@es ;
-                                                   
-                                                   rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Collection> ;
-                                                   
-                                                   rdfs:comment "An uniqueness collection is a collection where each element appears at most one time, that is, element repetitions are not allowed."@en ,
-                                                                "Una colección con unicidad es una colección donde cada elemento aparece a lo sumo una vez, es decir, donde no se permiten las repeticiones de elementos."@es .
-
-
-
-###  http://purl.org/ceu/eco/1.0#Vector
-
-<http://purl.org/ceu/eco/1.0#Vector> rdf:type owl:Class ;
-                                     
-                                     rdfs:label "Vector"@en ,
-                                                "Vector"@es ;
-                                     
-                                     rdfs:subClassOf <http://purl.org/ceu/eco/1.0#Multicombination> ,
-                                                     <http://purl.org/ceu/eco/1.0#Sequence> ,
-                                                     <http://purl.org/ceu/eco/1.0#Tuple> ;
-                                     
-                                     rdfs:comment "A vector is an homogeneous, without uniqueness, ordered and with fixed cardinality collection."@en ,
-                                                  "Un vector es una colección homogénea, sin unicidad, ordenada y de cardinalidad fija."@es .
+eco:Multiset rdfs:label "Multiset"@en ,
+                        "Multiconjunto"@es ;
+             
+             rdfs:comment "A multiset is an homogeneous, without uniqueness, non ordered and with variable cardinality collection."@en ,
+                          "Un multiconjunto es una colección homogenea, sin unicidad, no ordenada y de cardinalidad variable."@es .
+
+
+
+eco:Sequence rdfs:label "Sequence"@en ,
+                        "Secuencia"@es ;
+             
+             rdfs:comment "A sequence is an homogeneous, without uniqueness, ordered and with variable cardinality collection."@en ,
+                          "Una secuencia es una colección homogenea, sin unicidad, ordenada y de cardinalidad variable."@es .
+
+
+
+eco:Collection rdfs:label "Collection"@en ,
+                          "Colección"@es ;
+               
+               rdfs:comment "A collection is a group of objects or elements."@en ,
+                            "Una colección es una agrupación de objetos o elementos."@es .
+
+
+
+eco:Combination rdfs:label "Combination"@en ,
+                           "Combinación"@es ;
+                
+                rdfs:comment "A combination is an homogeneous, with uniqueness, non ordered and with fixed cardinality collection."@en ,
+                             "Una combinación es una colección homogénea, con unicidad, no ordenada y de cardinalidad fija."@es .
+
+
+
+eco:Multiheteroset rdfs:label "Multiheteroset"@en ,
+                              "Multiheteroconjunto"@es ;
+                   
+                   rdfs:comment "A multiheteroset is an heterogeneous, without uniqueness, non ordered and with variable cardinality collection."@en ,
+                                "Un multiheteroconjunto es una colección heterogénea, sin unicidad, no ordenada y de cardilnalidad variable."@es .
+
+
+
+eco:Box rdfs:label "Box"@en ,
+                   "Caja"@es ;
+        
+        rdfs:comment "A box is an heterogeneous, without uniqueness, non ordered and with fixed cardinality collection."@en ,
+                     "Una caja es una colección heterogénea, sin unicidad, no ordenada y de cardinalidad fija."@es .
+
+
+
+eco:Heteroset rdfs:label "Heteroset"@en ,
+                         "Heteroconjunto"@es ;
+              
+              rdfs:comment "A heteroset is an heterogeneous, with uniqueness, non ordered and with variable cardinality collection."@en ,
+                           "Un heteroconjunto es una colección heterogénea, con unicidad, no ordenada y de cardinalidad variable."@es .
 
 
 
@@ -772,60 +1114,197 @@
 #################################################################
 
 
-<urn:swrl#x> rdf:type swrl:Variable .
 <urn:swrl#collection> rdf:type swrl:Variable .
+<urn:swrl#item> rdf:type swrl:Variable .
+<urn:swrl#n> rdf:type swrl:Variable .
+<urn:swrl#last> rdf:type swrl:Variable .
+<urn:swrl#collecction> rdf:type swrl:Variable .
 <urn:swrl#item1> rdf:type swrl:Variable .
 <urn:swrl#item2> rdf:type swrl:Variable .
-<urn:swrl#collecction> rdf:type swrl:Variable .
-<urn:swrl#last> rdf:type swrl:Variable .
-<urn:swrl#n> rdf:type swrl:Variable .
-<urn:swrl#item> rdf:type swrl:Variable .
-<urn:swrl#nextitem> rdf:type swrl:Variable .
-<urn:swrl#index> rdf:type swrl:Variable .
-<urn:swrl#nextindex> rdf:type swrl:Variable .
+<urn:swrl#x> rdf:type swrl:Variable .
 <urn:swrl#collectionl> rdf:type swrl:Variable .
-<urn:swrl#i> rdf:type swrl:Variable .
 <urn:swrl#j> rdf:type swrl:Variable .
+<urn:swrl#i> rdf:type swrl:Variable .
+<urn:swrl#index> rdf:type swrl:Variable .
+<urn:swrl#nextitem> rdf:type swrl:Variable .
+<urn:swrl#nextindex> rdf:type swrl:Variable .
 <urn:swrl#current> rdf:type swrl:Variable .
 <urn:swrl#next> rdf:type swrl:Variable .
+<urn:swrl#element1> rdf:type swrl:Variable .
+<urn:swrl#element2> rdf:type swrl:Variable .
+[ rdf:type swrl:Imp ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest rdf:nil ;
+                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                     swrl:argument2 2 ;
+                                     swrl:propertyPredicate eco:hasCardinality ;
+                                     swrl:argument1 <urn:swrl#collection>
+                                   ]
+                       ] ;
+              rdf:first [ rdf:type swrl:ClassAtom ;
+                          swrl:classPredicate eco:FixedCardinalityCollection ;
+                          swrl:argument1 <urn:swrl#collection>
+                        ]
+            ] ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:ClassAtom ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:classPredicate [ rdf:type owl:Restriction ;
+                                                owl:onProperty eco:hasItem ;
+                                                owl:onClass eco:Item ;
+                                                owl:qualifiedCardinality "2"^^xsd:nonNegativeInteger
+                                              ]
+                        ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                     swrl:propertyPredicate eco:hasLastItem ;
+                                     swrl:argument1 <urn:swrl#collection> ;
+                                     swrl:argument2 <urn:swrl#last>
+                                   ] ;
+                         rdf:rest [ rdf:type swrl:AtomList ;
+                                    rdf:rest rdf:nil ;
+                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                swrl:propertyPredicate eco:hasCardinality ;
+                                                swrl:argument1 <urn:swrl#collection> ;
+                                                swrl:argument2 <urn:swrl#n>
+                                              ]
+                                  ]
+                       ] ;
+              rdf:first [ rdf:type swrl:ClassAtom ;
+                          swrl:argument1 <urn:swrl#collecction> ;
+                          swrl:classPredicate [ rdf:type owl:Class ;
+                                                owl:complementOf eco:UniquenessCollection
+                                              ]
+                        ]
+            ] ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:propertyPredicate eco:hasIndex ;
+                          swrl:argument1 <urn:swrl#last> ;
+                          swrl:argument2 <urn:swrl#n>
+                        ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate eco:hasOrderedItem ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#item>
+                        ] ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest [ rdf:type swrl:AtomList ;
+                                    rdf:rest rdf:nil ;
+                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                swrl:propertyPredicate eco:hasCardinality ;
+                                                swrl:argument1 <urn:swrl#collection> ;
+                                                swrl:argument2 <urn:swrl#n>
+                                              ]
+                                  ] ;
+                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                     swrl:propertyPredicate eco:hasIndex ;
+                                     swrl:argument1 <urn:swrl#item> ;
+                                     swrl:argument2 <urn:swrl#n>
+                                   ]
+                       ]
+            ] ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate eco:hasLastItem ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#item>
+                        ]
+            ]
+] .
 [ rdf:type swrl:Imp ;
   swrl:head [ rdf:type swrl:AtomList ;
               rdf:rest rdf:nil ;
               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                          swrl:argument2 <urn:swrl#nextindex> ;
-                          swrl:argument1 <urn:swrl#nextitem>
+                          swrl:propertyPredicate eco:hasCardinality ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#n>
                         ]
             ] ;
   swrl:body [ rdf:type swrl:AtomList ;
-              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasNextItem> ;
-                          swrl:argument1 <urn:swrl#item> ;
-                          swrl:argument2 <urn:swrl#nextitem>
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:propertyPredicate eco:hasIndex ;
+                          swrl:argument1 <urn:swrl#last> ;
+                          swrl:argument2 <urn:swrl#n>
                         ] ;
               rdf:rest [ rdf:type swrl:AtomList ;
-                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                                     swrl:argument2 <urn:swrl#index> ;
-                                     swrl:argument1 <urn:swrl#item>
-                                   ] ;
                          rdf:rest [ rdf:type swrl:AtomList ;
                                     rdf:rest rdf:nil ;
-                                    rdf:first [ rdf:type swrl:BuiltinAtom ;
-                                                swrl:builtin swrlb:add ;
-                                                swrl:arguments [ rdf:type rdf:List ;
-                                                                 rdf:first <urn:swrl#nextindex> ;
-                                                                 rdf:rest [ rdf:type rdf:List ;
-                                                                            rdf:first <urn:swrl#index> ;
-                                                                            rdf:rest [ rdf:type rdf:List ;
-                                                                                       rdf:first 1 ;
-                                                                                       rdf:rest rdf:nil
-                                                                                     ]
-                                                                          ]
-                                                               ]
+                                    rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                swrl:propertyPredicate eco:hasLastItem ;
+                                                swrl:argument1 <urn:swrl#collection> ;
+                                                swrl:argument2 <urn:swrl#last>
                                               ]
-                                  ]
+                                  ] ;
+                         rdf:first [ rdf:type swrl:ClassAtom ;
+                                     swrl:argument1 <urn:swrl#collecction> ;
+                                     swrl:classPredicate [ rdf:type owl:Class ;
+                                                           owl:complementOf eco:UniquenessCollection
+                                                         ]
+                                   ]
                        ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate eco:hasFirstItem ;
+                          swrl:argument1 <urn:swrl#collectionl> ;
+                          swrl:argument2 <urn:swrl#item>
+                        ]
+            ] ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:argument2 "1" ;
+                          swrl:propertyPredicate eco:hasIndex ;
+                          swrl:argument1 <urn:swrl#item>
+                        ] ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest rdf:nil ;
+                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                     swrl:propertyPredicate eco:hasOrderedItem ;
+                                     swrl:argument1 <urn:swrl#collection> ;
+                                     swrl:argument2 <urn:swrl#item>
+                                   ]
+                       ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate eco:followedByItem ;
+                          swrl:argument1 <urn:swrl#item1> ;
+                          swrl:argument2 <urn:swrl#item2>
+                        ] ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest rdf:nil ;
+                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                     swrl:propertyPredicate eco:hasOrderedItem ;
+                                     swrl:argument1 <urn:swrl#collection> ;
+                                     swrl:argument2 <urn:swrl#item1>
+                                   ]
+                       ]
+            ] ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate eco:hasOrderedItem ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:argument2 <urn:swrl#item2>
+                        ]
             ]
 ] .
 [ rdf:type swrl:Imp ;
@@ -848,13 +1327,13 @@
                                               ]
                                   ] ;
                          rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                                     swrl:propertyPredicate eco:hasIndex ;
                                      swrl:argument1 <urn:swrl#current> ;
                                      swrl:argument2 <urn:swrl#index>
                                    ]
                        ] ;
               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasNextItem> ;
+                          swrl:propertyPredicate eco:hasNextItem ;
                           swrl:argument1 <urn:swrl#current> ;
                           swrl:argument2 <urn:swrl#next>
                         ]
@@ -862,42 +1341,52 @@
   swrl:head [ rdf:type swrl:AtomList ;
               rdf:rest rdf:nil ;
               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
+                          swrl:propertyPredicate eco:hasIndex ;
                           swrl:argument1 <urn:swrl#next> ;
                           swrl:argument2 <urn:swrl#nextindex>
                         ]
             ]
 ] .
 [ rdf:type swrl:Imp ;
-  swrl:body [ rdf:type swrl:AtomList ;
-              rdf:first [ rdf:type swrl:ClassAtom ;
-                          swrl:argument1 <urn:swrl#collecction> ;
-                          swrl:classPredicate [ rdf:type owl:Class ;
-                                                owl:complementOf <http://purl.org/ceu/eco/1.0#UniquenessCollection>
-                                              ]
-                        ] ;
-              rdf:rest [ rdf:type swrl:AtomList ;
-                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasLastItem> ;
-                                     swrl:argument1 <urn:swrl#collection> ;
-                                     swrl:argument2 <urn:swrl#last>
-                                   ] ;
-                         rdf:rest [ rdf:type swrl:AtomList ;
-                                    rdf:rest rdf:nil ;
-                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                                                swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                                                swrl:argument1 <urn:swrl#last> ;
-                                                swrl:argument2 <urn:swrl#n>
-                                              ]
-                                  ]
-                       ]
-            ] ;
   swrl:head [ rdf:type swrl:AtomList ;
               rdf:rest rdf:nil ;
               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasCardinality> ;
-                          swrl:argument1 <urn:swrl#collection> ;
-                          swrl:argument2 <urn:swrl#n>
+                          swrl:argument2 "An ordered item can not be followed and preceded at the same time by another item" ;
+                          swrl:propertyPredicate <http://www.essepuntato.it/2009/10/error/hasError> ;
+                          swrl:argument1 <urn:swrl#item1>
+                        ]
+            ] ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate eco:followedByItem ;
+                          swrl:argument1 <urn:swrl#item1> ;
+                          swrl:argument2 <urn:swrl#item2>
+                        ] ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest rdf:nil ;
+                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                     swrl:propertyPredicate eco:followedByItem ;
+                                     swrl:argument2 <urn:swrl#item1> ;
+                                     swrl:argument1 <urn:swrl#item2>
+                                   ]
+                       ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:argument2 "An ordered item cannot be followed by itself" ;
+                          swrl:propertyPredicate <http://www.essepuntato.it/2009/10/error/hasError> ;
+                          swrl:argument1 <urn:swrl#x>
+                        ]
+            ] ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                          swrl:propertyPredicate eco:followedByItem ;
+                          swrl:argument2 <urn:swrl#x> ;
+                          swrl:argument1 <urn:swrl#x>
                         ]
             ]
 ] .
@@ -905,30 +1394,30 @@
   swrl:head [ rdf:type swrl:AtomList ;
               rdf:rest rdf:nil ;
               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasNextItem> ;
+                          swrl:propertyPredicate eco:hasNextItem ;
                           swrl:argument1 <urn:swrl#item1> ;
                           swrl:argument2 <urn:swrl#item2>
                         ]
             ] ;
   swrl:body [ rdf:type swrl:AtomList ;
               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
+                          swrl:propertyPredicate eco:hasOrderedItem ;
                           swrl:argument1 <urn:swrl#collection> ;
-                          swrl:argument2 <urn:swrl#item1>
+                          swrl:argument2 <urn:swrl#item2>
                         ] ;
               rdf:rest [ rdf:type swrl:AtomList ;
-                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
-                                     swrl:argument1 <urn:swrl#collection> ;
-                                     swrl:argument2 <urn:swrl#item2>
+                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                     swrl:propertyPredicate eco:hasIndex ;
+                                     swrl:argument1 <urn:swrl#item2> ;
+                                     swrl:argument2 <urn:swrl#j>
                                    ] ;
                          rdf:rest [ rdf:type swrl:AtomList ;
+                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                                swrl:propertyPredicate eco:hasIndex ;
+                                                swrl:argument2 <urn:swrl#i> ;
+                                                swrl:argument1 <urn:swrl#item1>
+                                              ] ;
                                     rdf:rest [ rdf:type swrl:AtomList ;
-                                               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                                                           swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                                                           swrl:argument1 <urn:swrl#item2> ;
-                                                           swrl:argument2 <urn:swrl#j>
-                                                         ] ;
                                                rdf:rest [ rdf:type swrl:AtomList ;
                                                           rdf:rest rdf:nil ;
                                                           rdf:first [ rdf:type swrl:BuiltinAtom ;
@@ -944,104 +1433,125 @@
                                                                                                 ]
                                                                                      ]
                                                                     ]
-                                                        ]
-                                             ] ;
-                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                                                swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                                                swrl:argument2 <urn:swrl#i> ;
-                                                swrl:argument1 <urn:swrl#item1>
-                                              ]
+                                                        ] ;
+                                               rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                           swrl:propertyPredicate eco:hasOrderedItem ;
+                                                           swrl:argument1 <urn:swrl#collection> ;
+                                                           swrl:argument2 <urn:swrl#item1>
+                                                         ]
+                                             ]
                                   ]
                        ]
-            ]
-] .
-[ rdf:type swrl:Imp ;
-  swrl:body [ rdf:type swrl:AtomList ;
-              rdf:rest [ rdf:type swrl:AtomList ;
-                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                                     swrl:argument1 <urn:swrl#item> ;
-                                     swrl:argument2 <urn:swrl#n>
-                                   ] ;
-                         rdf:rest [ rdf:type swrl:AtomList ;
-                                    rdf:rest rdf:nil ;
-                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                                                swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasCardinality> ;
-                                                swrl:argument1 <urn:swrl#collection> ;
-                                                swrl:argument2 <urn:swrl#n>
-                                              ]
-                                  ]
-                       ] ;
-              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
-                          swrl:argument1 <urn:swrl#collection> ;
-                          swrl:argument2 <urn:swrl#item>
-                        ]
-            ] ;
-  swrl:head [ rdf:type swrl:AtomList ;
-              rdf:rest rdf:nil ;
-              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasLastItem> ;
-                          swrl:argument1 <urn:swrl#collection> ;
-                          swrl:argument2 <urn:swrl#item>
-                        ]
-            ]
-] .
-[ rdf:type swrl:Imp ;
-  swrl:head [ rdf:type swrl:AtomList ;
-              rdf:rest rdf:nil ;
-              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasFirstItem> ;
-                          swrl:argument1 <urn:swrl#collectionl> ;
-                          swrl:argument2 <urn:swrl#item>
-                        ]
-            ] ;
-  swrl:body [ rdf:type swrl:AtomList ;
-              rdf:rest [ rdf:type swrl:AtomList ;
-                         rdf:rest rdf:nil ;
-                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                                     swrl:argument2 "1" ;
-                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                                     swrl:argument1 <urn:swrl#item>
-                                   ]
-                       ] ;
-              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
-                          swrl:argument1 <urn:swrl#collection> ;
-                          swrl:argument2 <urn:swrl#item>
-                        ]
             ]
 ] .
 [ rdf:type swrl:Imp ;
   swrl:head [ rdf:type swrl:AtomList ;
               rdf:rest rdf:nil ;
               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasIndex> ;
-                          swrl:argument1 <urn:swrl#last> ;
-                          swrl:argument2 <urn:swrl#n>
+                          swrl:argument2 "A colllection with uniqueness has repeated elements" ;
+                          swrl:propertyPredicate <http://www.essepuntato.it/2009/10/error/hasError> ;
+                          swrl:argument1 <urn:swrl#collection>
                         ]
             ] ;
   swrl:body [ rdf:type swrl:AtomList ;
               rdf:first [ rdf:type swrl:ClassAtom ;
-                          swrl:argument1 <urn:swrl#collecction> ;
-                          swrl:classPredicate [ rdf:type owl:Class ;
-                                                owl:complementOf <http://purl.org/ceu/eco/1.0#UniquenessCollection>
-                                              ]
+                          swrl:classPredicate eco:UniquenessCollection ;
+                          swrl:argument1 <urn:swrl#collection>
                         ] ;
               rdf:rest [ rdf:type swrl:AtomList ;
-                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasLastItem> ;
-                                     swrl:argument1 <urn:swrl#collection> ;
-                                     swrl:argument2 <urn:swrl#last>
-                                   ] ;
                          rdf:rest [ rdf:type swrl:AtomList ;
-                                    rdf:rest rdf:nil ;
-                                    rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                                                swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasCardinality> ;
-                                                swrl:argument1 <urn:swrl#collection> ;
-                                                swrl:argument2 <urn:swrl#n>
+                                    rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                swrl:propertyPredicate eco:hasContent ;
+                                                swrl:argument2 <urn:swrl#element2> ;
+                                                swrl:argument1 <urn:swrl#item2>
+                                              ] ;
+                                    rdf:rest [ rdf:type swrl:AtomList ;
+                                               rdf:first [ rdf:type swrl:DifferentIndividualsAtom ;
+                                                           swrl:argument1 <urn:swrl#item1> ;
+                                                           swrl:argument2 <urn:swrl#item2>
+                                                         ] ;
+                                               rdf:rest [ rdf:type swrl:AtomList ;
+                                                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                                      swrl:propertyPredicate eco:hasItem ;
+                                                                      swrl:argument1 <urn:swrl#collection> ;
+                                                                      swrl:argument2 <urn:swrl#item1>
+                                                                    ] ;
+                                                          rdf:rest [ rdf:type swrl:AtomList ;
+                                                                     rdf:rest [ rdf:type swrl:AtomList ;
+                                                                                rdf:rest rdf:nil ;
+                                                                                rdf:first [ rdf:type swrl:SameIndividualAtom ;
+                                                                                            swrl:argument1 <urn:swrl#element1> ;
+                                                                                            swrl:argument2 <urn:swrl#element2>
+                                                                                          ]
+                                                                              ] ;
+                                                                     rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                                                                 swrl:propertyPredicate eco:hasItem ;
+                                                                                 swrl:argument1 <urn:swrl#collection> ;
+                                                                                 swrl:argument2 <urn:swrl#item2>
+                                                                               ]
+                                                                   ]
+                                                        ]
+                                             ]
+                                  ] ;
+                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
+                                     swrl:propertyPredicate eco:hasContent ;
+                                     swrl:argument2 <urn:swrl#element1> ;
+                                     swrl:argument1 <urn:swrl#item1>
+                                   ]
+                       ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest rdf:nil ;
+                         rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                                     swrl:argument2 1 ;
+                                     swrl:propertyPredicate eco:hasCardinality ;
+                                     swrl:argument1 <urn:swrl#collection>
+                                   ]
+                       ] ;
+              rdf:first [ rdf:type swrl:ClassAtom ;
+                          swrl:classPredicate eco:FixedCardinalityCollection ;
+                          swrl:argument1 <urn:swrl#collection>
+                        ]
+            ] ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:ClassAtom ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:classPredicate [ rdf:type owl:Restriction ;
+                                                owl:onProperty eco:hasItem ;
+                                                owl:onClass eco:Item ;
+                                                owl:qualifiedCardinality "1"^^xsd:nonNegativeInteger
                                               ]
-                                  ]
+                        ]
+            ]
+] .
+[ rdf:type swrl:Imp ;
+  swrl:head [ rdf:type swrl:AtomList ;
+              rdf:rest rdf:nil ;
+              rdf:first [ rdf:type swrl:ClassAtom ;
+                          swrl:argument1 <urn:swrl#collection> ;
+                          swrl:classPredicate [ rdf:type owl:Restriction ;
+                                                owl:onProperty eco:hasItem ;
+                                                owl:onClass eco:Item ;
+                                                owl:qualifiedCardinality "3"^^xsd:nonNegativeInteger
+                                              ]
+                        ]
+            ] ;
+  swrl:body [ rdf:type swrl:AtomList ;
+              rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
+                          swrl:argument2 3 ;
+                          swrl:propertyPredicate eco:hasCardinality ;
+                          swrl:argument1 <urn:swrl#collection>
+                        ] ;
+              rdf:rest [ rdf:type swrl:AtomList ;
+                         rdf:rest rdf:nil ;
+                         rdf:first [ rdf:type swrl:ClassAtom ;
+                                     swrl:classPredicate eco:FixedCardinalityCollection ;
+                                     swrl:argument1 <urn:swrl#collection>
+                                   ]
                        ]
             ]
 ] .
@@ -1049,67 +1559,39 @@
   swrl:head [ rdf:type swrl:AtomList ;
               rdf:rest rdf:nil ;
               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                          swrl:argument2 "An ordered item cannot be followed by itself" ;
-                          swrl:propertyPredicate :hasError ;
-                          swrl:argument1 <urn:swrl#x>
+                          swrl:propertyPredicate eco:hasIndex ;
+                          swrl:argument2 <urn:swrl#nextindex> ;
+                          swrl:argument1 <urn:swrl#nextitem>
                         ]
             ] ;
-  swrl:body [ rdf:type swrl:AtomList ;
-              rdf:rest rdf:nil ;
-              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#followedBy> ;
-                          swrl:argument2 <urn:swrl#x> ;
-                          swrl:argument1 <urn:swrl#x>
-                        ]
-            ]
-] .
-[ rdf:type swrl:Imp ;
   swrl:body [ rdf:type swrl:AtomList ;
               rdf:rest [ rdf:type swrl:AtomList ;
-                         rdf:rest rdf:nil ;
+                         rdf:rest [ rdf:type swrl:AtomList ;
+                                    rdf:rest rdf:nil ;
+                                    rdf:first [ rdf:type swrl:BuiltinAtom ;
+                                                swrl:builtin swrlb:add ;
+                                                swrl:arguments [ rdf:type rdf:List ;
+                                                                 rdf:first <urn:swrl#nextindex> ;
+                                                                 rdf:rest [ rdf:type rdf:List ;
+                                                                            rdf:first <urn:swrl#index> ;
+                                                                            rdf:rest [ rdf:type rdf:List ;
+                                                                                       rdf:first 1 ;
+                                                                                       rdf:rest rdf:nil
+                                                                                     ]
+                                                                          ]
+                                                               ]
+                                              ]
+                                  ] ;
                          rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#followedBy> ;
-                                     swrl:argument1 <urn:swrl#item1> ;
-                                     swrl:argument2 <urn:swrl#item2>
+                                     swrl:propertyPredicate eco:hasNextItem ;
+                                     swrl:argument1 <urn:swrl#item> ;
+                                     swrl:argument2 <urn:swrl#nextitem>
                                    ]
                        ] ;
-              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
-                          swrl:argument1 <urn:swrl#collection> ;
-                          swrl:argument2 <urn:swrl#item1>
-                        ]
-            ] ;
-  swrl:head [ rdf:type swrl:AtomList ;
-              rdf:rest rdf:nil ;
-              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#hasOrderedItem> ;
-                          swrl:argument1 <urn:swrl#collection> ;
-                          swrl:argument2 <urn:swrl#item2>
-                        ]
-            ]
-] .
-[ rdf:type swrl:Imp ;
-  swrl:body [ rdf:type swrl:AtomList ;
-              rdf:rest [ rdf:type swrl:AtomList ;
-                         rdf:rest rdf:nil ;
-                         rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                                     swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#followedBy> ;
-                                     swrl:argument2 <urn:swrl#item1> ;
-                                     swrl:argument1 <urn:swrl#item2>
-                                   ]
-                       ] ;
-              rdf:first [ rdf:type swrl:IndividualPropertyAtom ;
-                          swrl:propertyPredicate <http://purl.org/ceu/eco/1.0#followedBy> ;
-                          swrl:argument1 <urn:swrl#item1> ;
-                          swrl:argument2 <urn:swrl#item2>
-                        ]
-            ] ;
-  swrl:head [ rdf:type swrl:AtomList ;
-              rdf:rest rdf:nil ;
               rdf:first [ rdf:type swrl:DatavaluedPropertyAtom ;
-                          swrl:argument2 "An ordered item can not be followed and preceded at the same time by another item" ;
-                          swrl:propertyPredicate :hasError ;
-                          swrl:argument1 <urn:swrl#item1>
+                          swrl:propertyPredicate eco:hasIndex ;
+                          swrl:argument2 <urn:swrl#index> ;
+                          swrl:argument1 <urn:swrl#item>
                         ]
             ]
 ] .
