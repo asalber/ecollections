@@ -15,41 +15,40 @@ function loadHash() {
       $("#overview").load("sections/overview.html"); 
       $("#description").load("sections/description.html"); 
       $("#crossref").load("sections/crossref.html", null, loadHash); 
-      $("#references").load("sections/references.html"); 
     });
     </script> 
   </head> 
 
-<body resource="http://purl.org/ceu/eco/" typeOf="owl:Ontology schema:TechArticle">
+<body resource="[Ontology URI]" typeOf="owl:Ontology schema:TechArticle">
 <span resource="" typeOf="foaf:Document schema:WebPage">
-<span property="dc:created schema:dateCreated" content="July 2015"></span>
-<span property="dc:isVersionOf prov:specializationOf" resource="http://purl.org/ceu/eco/1.0/"></span>
-<span property="prov:alternateOf prov:revisionOf" resource="http://purl.org/ceu/eco/1.0/"></span>
+<span property="dc:created schema:dateCreated" content="February 2015"></span>
+<span property="dc:isVersionOf prov:specializationOf" resource="http://purl.org/ceu/eco/1.0/ecollections.rdf"></span>
+<span property="prov:alternateOf prov:revisionOf" resource="http://purl.org/ceu/eco/1.0/ecollections.rdf"></span>
 <span property="dc:contributor prov:wasAttributedTo schema:contributor" resource="http://purl.org/net/dgarijo"></span>
 </span>
 <div class="head">
-<h1 property="dc:title schema:name">E-Collections Ontology</h1>
-<span property="dc:modified schema:dateModified" content="July 2015"></span>
-<h2>Release July 2015</h2>
+<h1 property="dc:title schema:name">E-Collections ontology</h1>
+<span property="dc:modified schema:dateModified" content="February 2015"></span>
+<h2>Release February 2015</h2>
 <dl>
 <dt>This version:</dt>
-<dd><a href="http://purl.org/ceu/eco/1.0/">http://purl.org/ceu/eco/1.0/</a></dd>
+<dd><a href="http://purl.org/ceu/eco/1.0/ecollections.rdf">http://purl.org/ceu/eco/1.0/ecollections.rdf</a></dd>
 </dl><dl><dt>Latest version:</dt>
-<dd><a href="http://purl.org/ceu/eco/1.0/">http://purl.org/ceu/eco/1.0/</a></dd>
+<dd><a href="http://purl.org/ceu/eco/1.0/ecollections.rdf">http://purl.org/ceu/eco/1.0/ecollections.rdf</a></dd>
 </dl><dl>
 <dt>Previous version:</dt>
-<dd><a property="schema:significantLink prov:wasRevisionOf" href="http://purl.org/ceu/eco/1.0/">http://purl.org/ceu/eco/1.0/</a></dd>
+<dd><a property="schema:significantLink prov:wasRevisionOf" href="http://purl.org/ceu/eco/1.0/ecollections.rdf">http://purl.org/ceu/eco/1.0/ecollections.rdf</a></dd>
 </dl>
 <dt>Revision</dt>
-<dd property="schema:version">1.0</dd>
+<dd property="schema:version">Version 1.0 2015/02/01</dd>
 <dl><dt>Authors:</dt>
-<dd><a property="dc:creator schema:author prov:wasAttributedTo" resource="http://aprendeconalf.es" href="http://aprendeconalf.es">Alfredo Sánchez Alberca</a>, San Pablo CEU University of Madrid</dd></dl>
+<dd>Alfredo Sánchez Alberca (asalber@ceu.es) <http://aprendeconalf.es/foaf.rdf></dd></dl>
 
-<a property="dc:rights" href="http://creativecommons.org/licenses/by-nc-sa/2.0/" rel="license">
-<img src="http://i.creativecommons.org/l/by-nc-sa/2.0/88x31.png" style="border-width:0" alt="License"></img>
-</a>
-<br/><dl>This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.0/">License name. E.g.: Creative Commons Attribution-NonCommercial-ShareAlike 2.0 Generic License</a>.</dl>
-<span property="dc:license" resource="http://creativecommons.org/licenses/by-nc-sa/2.0/"></span>
+<dl><dt>Imported Ontologies:</dt>
+<dd><a property="owl:imports schema:mentions" resource="http://www.essepuntato.it/2009/10/error" href="http://www.essepuntato.it/2009/10/error">http://www.essepuntato.it/2009/10/error</a></dd></dl>
+
+<dl>This work is licensed under a <a rel="license" href="http://insertlicenseURIhere.org">Licencia de Creative Commons Reconocimiento-CompartirIgual 4.0 Internacional (http://creativecommons.org/licenses/by-sa/4.0/).</a>.</dl>
+<span property="dc:license" resource="http://insertlicenseURIhere.org"></span>
 <hr/>
 </div>
      <div id="abstract"></div>
@@ -64,16 +63,15 @@ function loadHash() {
 <li><a href="#classes">4.1 Classes</a></li>
 <li><a href="#objectproperties">4.2 Object Properties</a></li>
         <li><a href="#dataproperties">4.3 Data Properties</a></li>
+        <li><a href="#namedindividuals">4.4 Named Individuals</a></li>
 </ul>
-<li><a href="#references">5. References</a></li>
-<li><a href="#acknowledgements">6. Acknowledgements</a></li>
+<li><a href="#acknowledgements">5. Acknowledgements</a></li>
 </ul>
 </div>
      <div id="introduction"></div>
      <div id="overview"></div>
      <div id="description"></div>
      <div id="crossref"></div>
-     <div id="references"></div>
 <div id="acknowledgements">
 <h2>6. Acknowledgements <span class="backlink"> back to <a href="#toc">ToC</a></span></h2>
 <p>The authors would like to thank <a href="http://palindrom.es/phd/whoami/">Silvio Peroni</a> for developing <a href="http://www.essepuntato.it/lode">LODE</a>, a Live OWL Documentation Environment, which is used for representing the Cross Referencing Section of this document and <a href="http://delicias.dia.fi.upm.es/members/dgarijo/">Daniel Garijo</a> for developing the script used to create the document template.</p>
