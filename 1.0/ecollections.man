@@ -18,18 +18,23 @@ Import: <http://www.essepuntato.it/2009/10/error>
 
 Annotations: 
     dc:title "E-Collections ontology"@en,
-    dc:rights "La ontología E-Collections está bajo una licencia de Creative Commons Reconocimiento-CompartirIgual 4.0 Internacional ( http://creativecommons.org/licenses/by-sa/4.0/)."@es,
     owl:versionInfo "Versión 1.0 01/02/2015"@de,
     rdfs:comment "La ontología E-Collections define una clasificación taxonómica de distintos tipos de colecciones de acuerdo a las características de homogeneidad, unicidad, orden y cardinalidad."@es,
+    dc:license "Licencia de Creative Commons Reconocimiento-CompartirIgual 4.0 Internacional (http://creativecommons.org/licenses/by-sa/4.0/)."@es,
     owl:versionInfo "Version 1.0 2015/02/01"@en,
     dc:creator "Alfredo Sánchez Alberca (asalber@ceu.es) <http://aprendeconalf.es/foaf.rdf>"@es,
     rdfs:label "E-Collections Ontology"@en,
-    dc:rights "E-Collections ontology is released under Attribution-ShareAlike 4.0 International Creative Commons license: http://creativecommons.org/licenses/by-sa/4.0/"@en,
     rdfs:label "Ontología E-Collections"@es,
     dc:title "Ontología E-Collections"@es,
-    rdfs:comment "The E-Collections ontology defines a collections taxonomy for different collection types based on the structural properties of homogeneity, uniqueness, order and cardinality."@en
+    dc:abstract "La ontología E-Collections define una clasificación taxonómica de distintos tipos de colecciones de acuerdo a las características de homogeneidad, unicidad, orden y cardinalidad."@es,
+    rdfs:comment "The E-Collections ontology defines a collections taxonomy for different collection types based on the structural properties of homogeneity, uniqueness, order and cardinality."@en,
+    dc:abstract "The E-Collections ontology defines a collections taxonomy for different collection types based on the structural properties of homogeneity, uniqueness, order and cardinality."@en,
+    dc:license "Attribution-ShareAlike 4.0 International Creative Commons license (http://creativecommons.org/licenses/by-sa/4.0/)"@en
 
 AnnotationProperty: dc:rights
+
+    
+AnnotationProperty: dc:license
 
     
 AnnotationProperty: owl:versionInfo
@@ -45,6 +50,9 @@ AnnotationProperty: dc:creator
 
     
 AnnotationProperty: dc:title
+
+    
+AnnotationProperty: dc:abstract
 
     
 Datatype: xsd:nonNegativeInteger
@@ -504,10 +512,10 @@ Class: eco:Sequence
 Class: <http://purl.org/ceu/eco#1CardinalityCollection>
 
     Annotations: 
-        rdfs:label "1-cardinality collection"@en,
         rdfs:label "Colección de cardinalidad 1"@es,
-        rdfs:label "Colección de cardinalidad fija que contiene exactamente un elemento."@es,
-        rdfs:label "Fixed cardinality collection with exactly 1 element."@en
+        rdfs:label "1-cardinality collection"@en,
+        rdfs:comment "Fixed cardinality collection with exactly 1 element."@en,
+        rdfs:comment "Colección de cardinalidad fija que contiene exactamente un elemento."@es
     
     EquivalentTo: 
         eco:FixedCardinalityCollection
@@ -533,8 +541,8 @@ Class: eco:OrderedItem
 
     Annotations: 
         rdfs:comment "Un item ordenado es un item que forma parte de una secuencia ordenada de items."@es,
-        rdfs:comment "An ordered item is an item that is part of an ordered sequence of items."@en,
         rdfs:label "Item ordenado"@es,
+        rdfs:comment "An ordered item is an item that is part of an ordered sequence of items."@en,
         rdfs:label "Ordered item"@en
     
     EquivalentTo: 
@@ -954,6 +962,9 @@ Individual: eco:List
     
     
 Rule: 
+    eco:FixedCardinalityCollection(?collection), eco:hasCardinality(?collection, 2) -> (eco:hasItem exactly 2 eco:Item)(?collection)
+
+Rule: 
     eco:hasIndex(?last, ?n), (not (eco:UniquenessCollection))(?collecction), eco:hasLastItem(?collection, ?last) -> eco:hasCardinality(?collection, ?n)
 
 Rule: 
@@ -963,7 +974,7 @@ Rule:
     eco:FixedCardinalityCollection(?collection), eco:hasCardinality(?collection, 1) -> (eco:hasItem exactly 1 eco:Item)(?collection)
 
 Rule: 
-    eco:FixedCardinalityCollection(?collection), eco:hasCardinality(?collection, 2) -> (eco:hasItem exactly 2 eco:Item)(?collection)
+    eco:hasCardinality(?collection, 3), eco:FixedCardinalityCollection(?collection) -> (eco:hasItem exactly 3 eco:Item)(?collection)
 
 Rule: 
     eco:hasOrderedItem(?collection, ?item), eco:hasIndex(?item, ?n), eco:hasCardinality(?collection, ?n) -> eco:hasLastItem(?collection, ?item)
@@ -988,9 +999,6 @@ Rule:
 
 Rule: 
     eco:followedByItem(?x, ?x) -> <http://www.essepuntato.it/2009/10/error/hasError>(?x, "An ordered item cannot be followed by itself")
-
-Rule: 
-    eco:hasCardinality(?collection, 3), eco:FixedCardinalityCollection(?collection) -> (eco:hasItem exactly 3 eco:Item)(?collection)
 
 Rule: 
     eco:hasIndex(?item, ?index), eco:hasNextItem(?item, ?nextitem), swrlb:add(?nextindex, ?index, 1) -> eco:hasIndex(?nextitem, ?nextindex)
